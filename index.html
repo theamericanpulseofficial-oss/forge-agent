@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d14"><title>Forge Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0d14;--g:rgba(255,255,255,.06);--b:rgba(255,255,255,.12);--t:#e8eaf2;--m:#8b90a5;--a:#7c6cff;--c:#38bdf8;--ok:#34d399;--er:#f87171}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{height:100dvh;display:flex;flex-direction:column;overflow:hidden;color:var(--t);font:14px/1.5 Inter,system-ui,sans-serif;background:radial-gradient(700px 420px at 0 -5%,#3b2a9a66,transparent),radial-gradient(700px 420px at 100% 0,#0a5a8a55,transparent),var(--bg)}
+button,input,select,textarea{font:inherit;color:inherit}
+.gl{background:var(--g);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--b);border-radius:16px}
+header{display:flex;align-items:center;gap:8px;padding:calc(10px + env(safe-area-inset-top)) 14px 10px}
+header h1{font:700 18px 'Space Grotesk',sans-serif;flex:1;background:linear-gradient(90deg,var(--a),var(--c));-webkit-background-clip:text;background-clip:text;color:transparent}
+.ib{background:var(--g);border:1px solid var(--b);border-radius:12px;padding:7px 11px;cursor:pointer}
+.ib:active,.send:active{transform:scale(.95)}
+main{flex:1;min-height:0;display:flex;padding:0 10px;gap:10px}
+.pane{display:none;flex:1;min-width:0;min-height:0;flex-direction:column;gap:8px}
+.pane.on{display:flex}
+.log{flex:1;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:2px}
+.msg{padding:10px 12px;max-width:94%;white-space:pre-wrap;word-break:break-word}
+.msg p{margin-top:8px}
+.user{align-self:flex-end;background:linear-gradient(135deg,#7c6cff55,#38bdf833)}
+.bot{align-self:flex-start}
+.plan div{padding:2px 0}.plan .d{color:var(--ok)}
+.chip{display:inline-block;margin:6px 4px 0 0;padding:2px 10px;border-radius:99px;background:#34d39922;color:var(--ok);font-size:12px}
+.qs{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.qs button{background:var(--g);border:1px solid var(--b);border-radius:99px;padding:5px 12px;cursor:pointer}
+details{color:var(--m);font-size:12px;margin-bottom:6px}
+.sm{color:var(--m);font-size:12px}
+.bar{display:flex;gap:8px;align-items:flex-end;padding:8px}
+.bar textarea{flex:1;background:none;border:0;outline:0;resize:none;max-height:140px;min-height:24px;padding:6px}
+.send{background:linear-gradient(135deg,var(--a),var(--c));border:0;border-radius:12px;padding:9px 16px;font-weight:700;cursor:pointer;color:#fff}
+.tabs{display:flex;gap:6px;overflow:auto;align-items:center}
+.tab{flex:none;background:var(--g);border:1px solid var(--b);border-radius:10px;padding:5px 12px;cursor:pointer}
+.tab.on{border-color:var(--a);background:#7c6cff33}
+#ed{flex:1;min-height:0;font:12.5px/1.55 ui-monospace,Menlo,Consolas,monospace;padding:12px;background:rgba(0,0,0,.4);border:1px solid var(--b);border-radius:14px;resize:none;outline:0;tab-size:2;white-space:pre;overflow:auto}
+.tb{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tb .ib.on{border-color:var(--a)}
+.pv{flex:1;min-height:0;display:flex;justify-content:center;overflow:auto}
+#fr{border:0;background:#fff;border-radius:14px;width:100%;max-width:100%;height:100%;transition:width .2s}
+.set{overflow:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+.f{display:flex;flex-direction:column;gap:4px}
+.f label{color:var(--m);font-size:12px}
+.f input:not([type=checkbox]),.f select{padding:10px;border-radius:12px;background:rgba(0,0,0,.3);border:1px solid var(--b);outline:0}
+option{background:#14172a}
+a{color:var(--c)}
+nav{display:flex;gap:6px;margin:8px 10px calc(8px + env(safe-area-inset-bottom));padding:6px}
+nav button{flex:1;background:none;border:0;padding:6px 2px;border-radius:12px;color:var(--m);cursor:pointer;font-size:12px;position:relative}
+nav button.on{background:var(--g);color:var(--t)}
+nav b{display:block;font-size:18px;font-weight:400}
+#bd{position:absolute;top:0;right:22%;background:var(--er);border-radius:9px;font-size:10px;padding:0 5px;color:#fff;display:none}
+#toast{position:fixed;top:calc(12px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);padding:9px 16px;opacity:0;transition:.25s;pointer-events:none;z-index:9;max-width:90%;text-align:center}
+.seg{display:flex;gap:4px;padding:4px}.seg button{flex:1;background:none;border:0;border-radius:11px;padding:6px;color:var(--m);cursor:pointer}.seg button.on{background:linear-gradient(135deg,#7c6cff55,#38bdf833);color:var(--t)}
+.ex{flex:1;min-height:0;display:flex;gap:8px}#tree{flex:0 0 240px;overflow:auto;padding:8px}.edp{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.ti{padding:5px 8px;border-radius:8px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ti:hover{background:var(--g)}.ti.on{background:#7c6cff33}
+#mdd{display:none;position:absolute;top:100%;left:0;right:0;max-height:230px;overflow:auto;z-index:5;background:#14172af2;margin-top:4px}#mdd div{padding:8px 12px;cursor:pointer}#mdd div:hover{background:var(--g)}
+.set{max-width:720px;width:100%;margin:0 auto}
+@media(max-width:899px){.ex.ed #tree,.ex:not(.ed) .edp{display:none}#tree{flex:1}}
+@media(min-width:900px){.back{display:none}#chat{display:flex!important;flex:0 0 430px}nav [data-t=chat]{display:none}nav{max-width:420px;align-self:center}}
+</style></head><body>
+<header><h1>Forge Agent</h1><button class="ib" id="undo" title="Undo last agent change">↩ Undo</button><button class="ib" id="zip">⬇ ZIP</button><button class="ib" id="gh">⬆ GitHub</button></header>
+<main>
+<section class="pane on" id="chat"><div class="log" id="log"></div>
+<div class="seg gl" id="seg"><button data-md="plan">📝 Plan</button><button data-md="build">⚡ Build</button><button data-md="both">🧠 Plan + Build</button></div><div class="bar gl"><textarea id="in" rows="1" placeholder="Describe the website you want…"></textarea><button class="send" id="send">Send</button></div></section>
+<section class="pane" id="fl"><div class="ex"><aside id="tree" class="gl"></aside><div class="edp"><div class="tb"><button class="ib back" id="bk">← Files</button><b class="sm" id="fn" style="flex:1;overflow:hidden;text-overflow:ellipsis"></b><button class="ib" id="nf">＋ File</button><button class="ib" id="df">🗑</button></div><textarea id="ed" spellcheck="false" placeholder="Pick a file from the tree. You can edit it here."></textarea></div></div></section>
+<section class="pane" id="pv"><div class="tb"><button class="ib" id="rl">⟳ Reload</button><button class="ib dv" data-w="375px">📱</button><button class="ib dv" data-w="768px">▭</button><button class="ib dv on" data-w="100%">🖥</button><button class="ib" id="op">Open tab</button><button class="ib" id="fix" style="display:none;border-color:var(--er)">🛠 Fix errors</button></div><div class="pv"><iframe id="fr" sandbox="allow-scripts allow-forms allow-modals allow-popups" title="Preview"></iframe></div></section>
+<section class="pane" id="set"><div class="set gl">
+<div class="f"><label>Provider</label><select id="prov"></select></div>
+<div class="f"><label>API key (kept only in this browser)</label><input id="key" type="password" autocomplete="off" placeholder="Paste key"><span class="sm" id="kl"></span></div>
+<div class="f" style="position:relative"><label>Model (start typing to search)</label><input id="model" autocomplete="off"><div id="mdd" class="gl"></div><button class="ib" id="fm" style="margin-top:6px">Fetch all models from provider</button></div>
+<div class="f"><label>Base URL</label><input id="base" autocomplete="off"></div>
+<div class="f"><label><input type="checkbox" id="auto"> Auto-fix runtime errors (up to 2 retries)</label></div>
+<div class="f"><label><input type="checkbox" id="px"> Use /api/proxy (needed for NVIDIA, works after a GitHub-import deploy)</label></div>
+<div class="f"><label>GitHub token</label><input id="ght" type="password" autocomplete="off" placeholder="ghp_..."><span class="sm"><a href="https://github.com/settings/tokens/new?scopes=repo&description=Forge%20Agent" target="_blank" rel="noopener">Create a token</a> (repo scope is pre-ticked, copy it and paste here)</span></div>
+<div class="f"><label>Repository (owner/name, or just a name to create it)</label><input id="ghr" placeholder="yourname/my-site"></div>
+<div class="f"><label>Branch (optional)</label><input id="ghb" placeholder="main"></div>
+<div class="f"><label>Commit message (optional)</label><input id="ghm" placeholder="Update from Forge Agent"></div>
+<div class="f"><label><input type="checkbox" id="ghp"> Create as private repo if it does not exist</label></div>
+<div class="tb"><button class="ib" id="ghpush">⬆ Push project to GitHub</button></div><p class="sm" id="ghl"></p>
+<div class="tb"><button class="ib" id="html">⬇ Single HTML</button><button class="ib" id="clr">New project</button></div>
+<p class="sm">Free options: OpenRouter ":free" models, Gemini, Groq, Cerebras, Ollama (local). Paid: OpenAI, Anthropic, DeepSeek, xAI, Mistral, Together.</p>
+</div></section>
+</main>
+<nav class="gl"><button data-t="chat" class="on"><b>💬</b>Chat</button><button data-t="fl"><b>📁</b>Files</button><button data-t="pv"><b>👁</b>Preview<span id="bd">0</span></button><button data-t="set"><b>⚙</b>Settings</button></nav>
+<div id="toast" class="gl"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const P={
+openrouter:{n:'OpenRouter · free + paid',u:'https://openrouter.ai/api/v1',k:'https://openrouter.ai/keys',m:['qwen/qwen3-coder:free','deepseek/deepseek-chat-v3.1:free','meta-llama/llama-3.3-70b-instruct:free','anthropic/claude-sonnet-4.5','openai/gpt-5','google/gemini-2.5-pro']},
+gemini:{n:'Google Gemini · free tier',u:'https://generativelanguage.googleapis.com/v1beta/openai',k:'https://aistudio.google.com/apikey',m:['gemini-2.5-flash','gemini-2.5-pro','gemini-2.5-flash-lite']},
+groq:{n:'Groq · free tier',u:'https://api.groq.com/openai/v1',k:'https://console.groq.com/keys',m:['llama-3.3-70b-versatile','openai/gpt-oss-120b','qwen/qwen3-32b']},
+cerebras:{n:'Cerebras · free tier',u:'https://api.cerebras.ai/v1',k:'https://cloud.cerebras.ai',m:['qwen-3-coder-480b','gpt-oss-120b','llama-3.3-70b']},
+nvidia:{n:'NVIDIA NIM · free credits',u:'https://integrate.api.nvidia.com/v1',k:'https://build.nvidia.com/settings/api-keys',px:1,m:['qwen/qwen3-coder-480b-a35b-instruct','meta/llama-3.3-70b-instruct','deepseek-ai/deepseek-r1','nvidia/llama-3.3-nemotron-super-49b-v1.5','moonshotai/kimi-k2-instruct']},
+mistral:{n:'Mistral · free + paid',u:'https://api.mistral.ai/v1',k:'https://console.mistral.ai/api-keys',m:['codestral-latest','mistral-large-latest','mistral-small-latest']},
+anthropic:{n:'Anthropic Claude · paid',u:'https://api.anthropic.com/v1',k:'https://console.anthropic.com/settings/keys',a:1,m:['claude-sonnet-5-5','claude-opus-5-5','claude-haiku-4-5-20251001']},
+openai:{n:'OpenAI · paid',u:'https://api.openai.com/v1',k:'https://platform.openai.com/api-keys',m:['gpt-5','gpt-5-mini','gpt-4.1']},
+deepseek:{n:'DeepSeek · paid, cheap',u:'https://api.deepseek.com/v1',k:'https://platform.deepseek.com/api_keys',m:['deepseek-chat','deepseek-reasoner']},
+xai:{n:'xAI Grok · paid',u:'https://api.x.ai/v1',k:'https://console.x.ai',m:['grok-4','grok-code-fast-1']},
+together:{n:'Together AI · free + paid',u:'https://api.together.xyz/v1',k:'https://api.together.ai/settings/api-keys',m:['Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8','meta-llama/Llama-3.3-70B-Instruct-Turbo']},
+ollama:{n:'Ollama · local, free',u:'http://localhost:11434/v1',nk:1,m:['qwen2.5-coder:7b','llama3.1:8b']},
+custom:{n:'Custom OpenAI-compatible',u:'',nk:1,m:[]}};
+const SYS=`You are Forge, a senior front-end engineer and autonomous website-building agent. Always answer in exactly this order:
+<think>Short analysis: what the user needs, audience, visual direction, risks.</think>
+<plan>
+- one concrete step per line
+</plan>
+Then every created or changed file as <file path="index.html">COMPLETE file content</file> (always the full file, never diffs, no markdown fences inside). Remove a file with <delete path="old.html"/>. Finish with <summary>2-3 short sentences on what you built and what to try.</summary>
+Rules: static sites only (HTML, CSS, vanilla JS), entry file index.html, link local files by relative path like style.css and app.js. Mobile-first, responsive, modern polished design with a clear visual identity, semantic accessible HTML, real copy instead of lorem ipsum, working interactivity, no build step, no API keys in code. External libraries only from cdnjs.cloudflare.com or cdn.jsdelivr.net. No remote images: use inline SVG, CSS gradients or emoji. localStorage is allowed. When editing an existing project, output only the files that change. Reply in the user's language.`;
+let S=Object.assign({prov:'openrouter',key:{},mod:{},base:{},auto:1,px:{},gh:{},mode:'both'},JSON.parse(localStorage.fa_s||'{}'));let ML=[],shut=new Set();
+const MD={plan:'\n\n[MODE: PLAN. Do NOT write any files. Output only <think>, a detailed step-by-step <plan> (architecture, files, design, features, edge cases) and a <summary> asking me to approve.]',build:'\n\n[MODE: BUILD. Skip the long plan: one short <think>, a 2-4 line <plan>, then the files and <summary>.]',both:'\n\n[MODE: PLAN + BUILD. Think, write a detailed <plan>, then build every file.]'};
+let F=JSON.parse(localStorage.fa_f||'{}'),H=JSON.parse(localStorage.fa_h||'[]'),cf=Object.keys(F)[0]||'',busy=0,ctl,errs=[],fixN=0,dirty=1,page='index.html';
+const log=$('#log'),cur=()=>{const p=P[S.prov]||P.openrouter;return{p,key:S.key[S.prov]||'',model:S.mod[S.prov]||p.m[0]||'',base:(S.base[S.prov]||p.u).replace(/\/$/,''),px:S.px[S.prov]!=null?S.px[S.prov]:!!p.px}};
+const save=()=>{try{localStorage.fa_s=JSON.stringify(S);localStorage.fa_f=JSON.stringify(F);localStorage.fa_h=JSON.stringify(H.slice(-40))}catch(e){}};
+function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.opacity=0,2800)}
+function add(c,h){const d=document.createElement('div');d.className='msg gl '+c;d.innerHTML=h;log.append(d);log.scrollTop=log.scrollHeight;return d}
+function view(raw,done){
+ const g=t=>{const m=raw.match(new RegExp('<'+t+'>([\\s\\S]*?)(</'+t+'>|$)'));return m?m[1].trim():''};
+ const th=g('think'),pl=g('plan'),su=g('summary'),fs=[...raw.matchAll(/<file path="([^"]+)"|\[wrote: ([^\]]+)\]/g)].map(m=>m[1]||m[2]);
+ const rest=raw.replace(/<(think|plan|summary)>[\s\S]*?(<\/\1>|$)/g,'').replace(/<file path[\s\S]*?(<\/file>|$)/g,'').replace(/<delete[^>]*>|\[wrote: [^\]]+\]/g,'').trim();
+ return(th?`<details${done?'':' open'}><summary>🧠 Thinking</summary>${esc(th)}</details>`:'')+(pl?`<div class="plan">${pl.split('\n').filter(x=>x.trim()).map(x=>`<div class="${done?'d':''}">${done?'✓':'◻'} ${esc(x.replace(/^[-*•\d.)\s]+/,''))}</div>`).join('')}</div>`:'')+fs.map(f=>`<span class="chip">${done?'✓':'✎'} ${esc(f)}</span>`).join('')+(su?`<p>${esc(su)}</p>`:'')+(rest?`<p>${esc(rest)}</p>`:'')}
+function welcome(){add('bot',`Tell me what to build and I will think, plan, write the files and show a live preview. I also fix my own errors.<div class="qs" id="qs">${['Dark portfolio for a photographer','Landing page for a coffee shop','Todo app with local storage','Analytics dashboard with charts'].map(q=>`<button data-q="${q}">${q}</button>`).join('')}</div>`)}
+function chatInit(){log.innerHTML='';if(!H.length)welcome();H.forEach(m=>add(m.role=='user'?'user':'bot',m.role=='user'?esc(m.content):view(m.content,1)))}
+const np=p=>p.trim().replace(/^(\.?\/)+/,'').replace(/\.\.\//g,'');
+const cl=c=>c.replace(/^\s*```[\w-]*\n/,'').replace(/\n```\s*$/,'').replace(/\n$/,'');
+function ctx(){let n=0,o='';for(const p in F){const s=`<file path="${p}">\n${F[p]}\n</file>\n`;if(n+s.length>70000){o+=`(file ${p} omitted for size)\n`;continue}n+=s.length;o+=s}return o?'\n\nCurrent project files:\n'+o:''}
+async function sse(r,tok,pick){
+ if(!r.ok){const t=await r.text();throw new Error(r.status+' '+t.slice(0,300))}
+ const rd=r.body.getReader(),dc=new TextDecoder();let buf='',all='';
+ for(;;){const{done,value}=await rd.read();if(done)break;buf+=dc.decode(value,{stream:true});const ls=buf.split('\n');buf=ls.pop();
+  for(const l of ls){if(!l.startsWith('data:'))continue;const d=l.slice(5).trim();if(d=='[DONE]')continue;try{const t=pick(JSON.parse(d));if(t){all+=t;tok(all)}}catch(e){}}}
+ return all}
+const call=(c,path,o)=>{const u=c.base+path;if(c.px)o.headers['x-target']=u;return fetch(c.px?'/api/proxy':u,o).then(r=>{if(c.px&&r.status==404&&!(r.headers.get('content-type')||'').includes('json'))throw new Error('Proxy not deployed. Deploy through GitHub import so /api/proxy exists (see README), or untick "Use proxy" in Settings.');return r})};
+async function llm(msgs,tok,sig){
+ const c=cur();
+ if(c.p.a){const r=await call(c,'/messages',{method:'POST',signal:sig,headers:{'content-type':'application/json','x-api-key':c.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:c.model,max_tokens:16000,system:msgs[0].content,messages:msgs.slice(1),stream:true})});
+  return sse(r,tok,j=>j.type=='content_block_delta'?j.delta.text:'')}
+ const h={'content-type':'application/json'};if(c.key)h.authorization='Bearer '+c.key;
+ const r=await call(c,'/chat/completions',{method:'POST',signal:sig,headers:h,body:JSON.stringify({model:c.model,messages:msgs,stream:true})});let rs=0;
+ return sse(r,tok,j=>{const d=(j.choices&&j.choices[0]&&j.choices[0].delta)||{},x=d.reasoning_content||d.reasoning;let o='';if(x){if(!rs){o='<think>';rs=1}o+=x}if(d.content){if(rs){o+='</think>';rs=0}o+=d.content}return o})}
+async function run(t,md){md=md||S.mode||'both';
+ t=t.trim();if(busy||!t)return;const c=cur();
+ if(!c.key&&!c.p.nk){toast('Add your API key in Settings first');show('set');return}
+ if(!c.model||!c.base){toast('Set a model and base URL in Settings');show('set');return}
+ busy=1;$('#send').textContent='Stop';ctl=new AbortController();
+ try{localStorage.fa_u=JSON.stringify({F,H})}catch(e){}
+ const q=$('#qs');if(q)q.closest('.msg').remove();
+ H.push({role:'user',content:t});add('user',esc(t));
+ const el=add('bot','<span class="sm">● thinking…</span>');let raw='',er='';
+ try{await llm([{role:'system',content:SYS},...H.slice(-11,-1),{role:'user',content:t+MD[md]+ctx()}],r=>{raw=r;el.innerHTML=view(r);log.scrollTop=log.scrollHeight},ctl.signal)}
+ catch(e){er=`<p style="color:var(--er)">⚠ ${esc(e.name=='AbortError'?'Stopped':e.message)}</p>`}
+ let ch=0;
+ raw.replace(/<file path="([^"]+)">\n?([\s\S]*?)<\/file>/g,(_,p,x)=>{F[np(p)]=cl(x);ch++});
+ raw.replace(/<delete path="([^"]+)"\s*\/?>/g,(_,p)=>{delete F[np(p)];ch++});
+ if(!raw&&!er)er='<p style="color:var(--er)">⚠ Empty response. Check the model name and key.</p>';
+ el.innerHTML=view(raw,1)+er+(md=='plan'&&raw&&!er?'<div class="qs"><button data-run="1">▶ Build this plan</button></div>':'');
+ H.push({role:'assistant',content:raw.replace(/<file path="([^"]+)">[\s\S]*?(<\/file>|$)/g,'[wrote: $1]')||'(no reply)'});
+ if(ch){if(!F[page])page='index.html';dirty=1;errs=[];badge();tabs();if(innerWidth<900)show('pv');else pv()}
+ save();busy=0;$('#send').textContent='Send';
+ if(ch&&S.auto)setTimeout(()=>{if(errs.length&&fixN<2&&!busy){fixN++;run('Auto-check: these runtime errors appeared in the preview. Fix them.\n'+errs.join('\n'),'build')}},2400)}
+function build(pg){
+ let h=F[pg]||F['index.html'];
+ if(h==null)return'<body style="margin:0;height:100vh;display:grid;place-items:center;background:#0b0d14;color:#8b90a5;font:16px system-ui">Describe your site in chat</body>';
+ const rp=p=>p.replace(/^(\.?\/)+/,'');
+ h=h.replace(/<link\b[^>]*>/g,m=>{const x=m.match(/href=["']([^"':]+)["']/);return x&&/stylesheet/.test(m)&&F[rp(x[1])]!=null?`<style>${F[rp(x[1])]}</style>`:m});
+ h=h.replace(/<script\b([^>]*?)src=["']([^"':]+)["']([^>]*)><\/script>/g,(m,a,p,b)=>F[rp(p)]!=null?`<script${a}${b}>${F[rp(p)].replace(/<\/script/gi,'<\\/script')}<\/script>`:m);
+ const cap='<script>try{localStorage.x}catch(e){var m={},st={getItem:function(k){return k in m?m[k]:null},setItem:function(k,v){m[k]=String(v)},removeItem:function(k){delete m[k]},clear:function(){m={}},key:function(i){return Object.keys(m)[i]||null}};try{Object.defineProperty(window,"localStorage",{value:st});Object.defineProperty(window,"sessionStorage",{value:st})}catch(e){}}addEventListener("error",function(e){parent.postMessage({fa:1,m:e.message+" (line "+(e.lineno||"?")+")"},"*")});addEventListener("unhandledrejection",function(e){parent.postMessage({fa:1,m:"Promise: "+(e.reason&&e.reason.message||e.reason)},"*")});var ce=console.error;console.error=function(){parent.postMessage({fa:1,m:[].join.call(arguments," ")},"*");ce.apply(console,arguments)};document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a");if(!a)return;var h=a.getAttribute("href")||"";if(/^[\\w\\-\\/.]+\\.html$/.test(h)){e.preventDefault();parent.postMessage({fa:2,p:h},"*")}});<\/script>';
+ return /<head[^>]*>/i.test(h)?h.replace(/<head[^>]*>/i,x=>x+cap):cap+h}
+function pv(){if(!dirty&&$('#fr').srcdoc)return;dirty=0;$('#fr').srcdoc=build(page)}
+function badge(){$('#bd').textContent=errs.length;$('#bd').style.display=errs.length?'block':'none';$('#fix').style.display=errs.length?'':'none'}
+function tabs(){if(!F[cf])cf=F['index.html']!=null?'index.html':Object.keys(F)[0]||'';
+ const t={};Object.keys(F).sort().forEach(p=>{let n=t;const q=p.split('/');q.forEach((x,i)=>{if(i==q.length-1)n[x]=p;else{if(typeof n[x]!='object')n[x]={};n=n[x]}})});
+ const ic=k=>({html:'🌐',css:'🎨',js:'📜',json:'🧾',md:'📝',svg:'🖼'}[k.split('.').pop()]||'📄');
+ const r=(n,d,pre)=>Object.entries(n).sort((a,b)=>(typeof b[1]=='object')-(typeof a[1]=='object')||a[0].localeCompare(b[0])).map(([k,v])=>typeof v=='object'?`<div class="ti" style="padding-left:${d*14+8}px" data-f="${esc(pre+k)}">${shut.has(pre+k)?'▸':'▾'} 📁 ${esc(k)}</div>`+(shut.has(pre+k)?'':r(v,d+1,pre+k+'/')):`<div class="ti ${v==cf?'on':''}" style="padding-left:${d*14+8}px" data-p="${esc(v)}">${ic(k)} ${esc(k)}</div>`).join('');
+ $('#tree').innerHTML=Object.keys(F).length?`<div class="sm" style="padding:4px 8px">Project · ${Object.keys(F).length} files</div>`+r(t,0,''):'<div class="sm" style="padding:8px">No files yet. Ask the agent to build something.</div>';
+ $('#ed').value=F[cf]??'';$('#ed').disabled=!cf;$('#fn').textContent=cf;if(!cf)$('.ex').classList.remove('ed')}
+function sets(){const c=cur();$('#prov').innerHTML=Object.entries(P).map(([k,v])=>`<option value="${k}" ${k==S.prov?'selected':''}>${v.n}</option>`).join('');$('#key').value=c.key;$('#base').value=c.base;$('#model').value=c.model;ML=c.p.m.slice();$('#kl').innerHTML=c.p.k?`<a href="${c.p.k}" target="_blank" rel="noopener">Get an API key</a>`:'';$('#auto').checked=!!S.auto;$('#px').checked=c.px;const g=S.gh;$('#ght').value=g.t||'';$('#ghr').value=g.r||'';$('#ghb').value=g.b||'';$('#ghm').value=g.m||'';$('#ghp').checked=!!g.p}
+function show(t){if(t=='chat'&&innerWidth>=900)t='pv';document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id==t));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t==t));if(t=='pv')pv();if(t=='fl')tabs();if(t=='set')sets()}
+function dl(b,n){const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
+async function fetchM(q){const c=cur();try{const h={};if(c.p.a){h['x-api-key']=c.key;h['anthropic-version']='2023-06-01';h['anthropic-dangerous-direct-browser-access']='true'}else if(c.key)h.authorization='Bearer '+c.key;
+ const r=await call(c,'/models',{headers:h});if(!r.ok)throw new Error(r.status);const j=await r.json();
+ const ids=(j.data||j.models||[]).map(x=>String(x.id||x.name||'').replace(/^models\//,'')).filter(Boolean).sort((a,b)=>(/:free$/.test(b)-/:free$/.test(a))||a.localeCompare(b));
+ ML=ids;ML.f=1;if(!q)toast(ids.length+' models loaded. Start typing in the Model box.');if(document.activeElement.id=='model')mdd()}catch(e){if(!q)toast('Could not load models: '+e.message)}}
+function mdd(){const q=$('#model').value.toLowerCase(),l=ML.filter(m=>m.toLowerCase().includes(q)).slice(0,60);$('#mdd').innerHTML=l.map(m=>`<div data-m="${esc(m)}">${esc(m)}</div>`).join('')||'<div class="sm">No match. Your text will be used as the model name.</div>';$('#mdd').style.display='block'}
+async function ghc(m,u,b){const r=await fetch('https://api.github.com'+u,{method:m,headers:{authorization:'Bearer '+S.gh.t,accept:'application/vnd.github+json','content-type':'application/json'},body:b?JSON.stringify(b):undefined});const j=await r.json().catch(()=>({}));if(!r.ok){const e=new Error(j.message||r.status);e.s=r.status;throw e}return j}
+async function ghPush(){const g=S.gh;
+ if(!g.t||!g.r){toast('Add your GitHub token and repo first');show('set');return}
+ if(!Object.keys(F).length)return toast('No files to push yet');
+ try{toast('Pushing to GitHub…');let o,n;const rp=g.r.replace(/^https?:\/\/github.com\//,'').replace(/\.git$/,'').split('/');
+  if(rp.length>1){o=rp[0];n=rp[1]}else{o=(await ghc('GET','/user')).login;n=rp[0]}
+  const R=`/repos/${o}/${n}`;let repo;
+  try{repo=await ghc('GET',R)}catch(e){if(e.s!=404)throw e;repo=await ghc('POST','/user/repos',{name:n,private:!!g.p,auto_init:true,description:'Built with Forge Agent'})}
+  const br=g.b||repo.default_branch||'main',ref=async b=>(await ghc('GET',`${R}/git/ref/heads/${b}`)).object.sha;let base;
+  try{base=await ref(br)}catch(e){
+   if(e.s==409){await ghc('PUT',`${R}/contents/README.md`,{message:'Initial commit',content:btoa('# '+n)});base=await ref(br)}
+   else if(e.s==404){base=await ref(repo.default_branch);await ghc('POST',`${R}/git/refs`,{ref:'refs/heads/'+br,sha:base})}else throw e}
+  const bc=await ghc('GET',`${R}/git/commits/${base}`),items=[];
+  for(const p in F){const b=await ghc('POST',`${R}/git/blobs`,{content:F[p],encoding:'utf-8'});items.push({path:p,mode:'100644',type:'blob',sha:b.sha})}
+  const t=await ghc('POST',`${R}/git/trees`,{base_tree:bc.tree.sha,tree:items}),c=await ghc('POST',`${R}/git/commits`,{message:g.m||'Update from Forge Agent',tree:t.sha,parents:[base]});
+  await ghc('PATCH',`${R}/git/refs/heads/${br}`,{sha:c.sha});
+  const u=`https://github.com/${o}/${n}`;$('#ghl').innerHTML=`Pushed ✓ <a href="${u}" target="_blank" rel="noopener">${o}/${n}</a> · <a href="https://app.netlify.com/start/deploy?repository=${u}" target="_blank" rel="noopener">Deploy on Netlify</a> · <a href="https://vercel.com/new/clone?repository-url=${u}" target="_blank" rel="noopener">Deploy on Vercel</a>`;toast('Pushed to GitHub ✓')
+ }catch(e){toast('GitHub: '+e.message+(e.s==401?' (check token)':e.s==403||e.s==404?' (token needs repo scope)':''))}}
+function seg(){document.querySelectorAll('#seg button').forEach(b=>b.classList.toggle('on',b.dataset.md==(S.mode||'both')))}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>show(b.dataset.t));
+$('#send').onclick=()=>busy?ctl.abort():go();
+function go(){const i=$('#in'),t=i.value;i.value='';i.style.height='auto';fixN=0;run(t)}
+$('#in').oninput=e=>{e.target.style.height='auto';e.target.style.height=e.target.scrollHeight+'px'};
+$('#in').onkeydown=e=>{if(e.key=='Enter'&&!e.shiftKey&&innerWidth>=900){e.preventDefault();busy||go()}};
+log.onclick=e=>{const d=e.target.dataset;if(d.q)run(d.q);if(d.run){e.target.closest('.qs').remove();run('Build the plan above exactly as planned.','build')}};
+$('#tree').onclick=e=>{const el=e.target.closest('.ti');if(!el)return;const d=el.dataset;if(d.f){shut.has(d.f)?shut.delete(d.f):shut.add(d.f)}else if(d.p){cf=d.p;$('.ex').classList.add('ed')}tabs()};
+$('#bk').onclick=()=>$('.ex').classList.remove('ed');
+$('#ed').oninput=e=>{F[cf]=e.target.value;dirty=1;save()};
+$('#nf').onclick=()=>{const n=np(prompt('New file name (e.g. about.html)')||'');if(n){F[n]=F[n]||'';cf=n;$('.ex').classList.add('ed');dirty=1;save();tabs()}};
+$('#df').onclick=()=>{if(cf&&confirm('Delete '+cf+'?')){delete F[cf];$('.ex').classList.remove('ed');dirty=1;save();tabs()}};
+$('#rl').onclick=()=>{dirty=1;errs=[];badge();pv()};
+document.querySelectorAll('.dv').forEach(b=>b.onclick=()=>{document.querySelectorAll('.dv').forEach(x=>x.classList.toggle('on',x==b));$('#fr').style.width=b.dataset.w});
+$('#op').onclick=()=>window.open(URL.createObjectURL(new Blob([build(page)],{type:'text/html'})),'_blank');
+$('#fix').onclick=()=>{show('chat');fixN=0;run('Fix these runtime errors found in the live preview:\n'+errs.join('\n'),'build')};
+$('#undo').onclick=()=>{if(busy)return;try{const u=JSON.parse(localStorage.fa_u||'null');if(!u)return toast('Nothing to undo');F=u.F;H=u.H;localStorage.removeItem('fa_u');dirty=1;errs=[];badge();save();tabs();chatInit();toast('Reverted last agent run')}catch(e){toast('Undo failed')}};
+$('#zip').onclick=async()=>{if(!Object.keys(F).length)return toast('No files yet');if(typeof JSZip=='undefined')return toast('ZIP library blocked. Use Single HTML in Settings.');const z=new JSZip();for(const p in F)z.file(p,F[p]);dl(await z.generateAsync({type:'blob'}),'website.zip')};
+$('#html').onclick=()=>{if(!F['index.html'])return toast('No index.html yet');dl(new Blob([build('index.html').replace(/<script>try\{localStorage[\s\S]*?<\/script>/,'')],{type:'text/html'}),'index.html')};
+$('#clr').onclick=()=>{if(busy||!confirm('Clear all files and chat?'))return;localStorage.fa_u=JSON.stringify({F,H});F={};H=[];cf='';page='index.html';dirty=1;errs=[];badge();save();tabs();chatInit();show('chat')};
+$('#prov').onchange=e=>{S.prov=e.target.value;save();sets()};
+$('#key').oninput=e=>{S.key[S.prov]=e.target.value.trim();save()};
+$('#model').oninput=e=>{S.mod[S.prov]=e.target.value.trim();save();mdd()};
+$('#model').onfocus=()=>{if(!ML.f&&cur().key)fetchM(1);mdd()};
+$('#mdd').onmousedown=e=>{const m=e.target.dataset.m;if(m){e.preventDefault();$('#model').value=m;S.mod[S.prov]=m;save();$('#mdd').style.display='none'}};
+document.addEventListener('click',e=>{if(!e.target.closest('#model,#mdd'))$('#mdd').style.display='none'});
+[['ght','t'],['ghr','r'],['ghb','b'],['ghm','m']].forEach(([i,k])=>$('#'+i).oninput=e=>{S.gh[k]=e.target.value.trim();save()});
+$('#ghp').onchange=e=>{S.gh.p=e.target.checked;save()};$('#px').onchange=e=>{S.px[S.prov]=e.target.checked;save()};
+$('#gh').onclick=$('#ghpush').onclick=ghPush;$('#seg').onclick=e=>{const m=e.target.dataset.md;if(m){S.mode=m;save();seg()}};
+$('#base').oninput=e=>{S.base[S.prov]=e.target.value.trim();save()};
+$('#auto').onchange=e=>{S.auto=e.target.checked?1:0;save()};
+$('#fm').onclick=fetchM;
+addEventListener('message',e=>{if(e.source!==$('#fr').contentWindow)return;const d=e.data||{};
+ if(d.fa==1&&errs.length<5&&!errs.includes(d.m)){errs.push(d.m);badge()}
+ if(d.fa==2){const p=np(d.p);if(F[p]){page=p;dirty=1;pv()}}});
+tabs();sets();seg();chatInit();show(innerWidth>=900?'pv':'chat');
+</script></body></html>

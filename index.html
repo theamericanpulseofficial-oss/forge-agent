@@ -118,12 +118,20 @@ nav b{display:inline;font-size:13px;margin-right:6px}#bd{right:2px;top:6px}
 .tx2{margin-top:6px;color:var(--m);font-size:12px}.tx2 summary{cursor:pointer}
 :root{--sw:232px}
 @media(min-width:900px){body{grid-template-columns:var(--sw) var(--cw) 1fr}body.nosb{--sw:0px}body.nosb #side{display:none}#rz{left:calc(var(--sw) + var(--cw) - 3px)}#mn{display:inline-block!important}}
+
+.bar{flex-wrap:wrap;align-items:center}.bar textarea{flex:1 0 100%}
+.mp{position:relative;margin-right:auto}
+.mb{background:rgba(255,255,255,.06);border:1px solid var(--b);border-radius:99px;padding:5px 12px;cursor:pointer;font-size:13px;transition:.15s}.mb:hover{background:rgba(255,255,255,.1)}
+.mm{display:none;position:absolute;bottom:calc(100% + 10px);left:0;min-width:250px;padding:6px;z-index:15;background:#14172af5}.mp.open .mm{display:block}
+.mm button{display:block;width:100%;text-align:left;background:none;border:0;padding:8px 10px;border-radius:9px;cursor:pointer}.mm button:hover{background:rgba(255,255,255,.07)}
+.mm button.on{background:#7b8cff26}.mm button.on b::after{content:' ✓';color:var(--a)}
+.mm b{display:block;font-weight:500}.mm small{color:var(--m);font-size:12px}
 </style></head><body>
 <aside id="side"><div class="brand"><span class="logo">◆</span><b>Forge</b><span class="bdg">agent</span></div><button class="ib pri" id="np">＋ New chat</button><div class="sl">Chats</div><div id="plist"></div><button class="ib" id="clrall">🗑 Clear all history</button></aside><div id="sc"></div><div id="rz"></div>
 <header><button class="ib" id="mn">☰</button><h1 id="ttl">New chat</h1><span class="bdg" id="mdl"></span><button class="ib" id="undo" data-tip="Undo last agent run">↩</button><button class="ib" id="zip" data-tip="Download ZIP">⬇</button><button class="ib" id="gh" data-tip="Push to GitHub">⬆</button></header>
 <main>
 <section class="pane on" id="chat"><div class="log" id="log"></div>
-<div class="seg gl" id="seg"><button data-md="plan">📝 Plan</button><button data-md="build">⚡ Build</button><button data-md="both">🧠 Plan + Build</button></div><div class="bar gl"><textarea id="in" rows="1" placeholder="Describe the website you want…"></textarea><button class="send" id="send">Send</button></div></section>
+<div class="bar gl"><textarea id="in" rows="1" placeholder="Describe the website you want…"></textarea><div class="mp" id="mp"><button class="mb" id="mb"></button><div class="mm gl" id="mm"><button data-md="plan"><b>📝 Plan</b><small>Think and plan only, no files</small></button><button data-md="build"><b>⚡ Build</b><small>Skip the long plan, write files fast</small></button><button data-md="both"><b>🧠 Plan + Build</b><small>Plan first, then build everything</small></button></div></div><button class="send" id="send">Send</button></div></section>
 <section class="pane" id="fl"><div class="ex"><aside id="tree" class="gl"></aside><div class="edp"><div class="tb"><button class="ib back" id="bk">← Files</button><b class="sm" id="fn" style="flex:1;overflow:hidden;text-overflow:ellipsis"></b><button class="ib" id="nf">＋ File</button><button class="ib" id="df">🗑</button></div><div class="code"><div id="gut"></div><div class="cw"><div id="al"></div><pre id="hl" aria-hidden="true"></pre><textarea id="ed" spellcheck="false" wrap="off" placeholder="Pick a file from the tree."></textarea></div></div></div></div></section>
 <section class="pane" id="pv"><div class="tb"><button class="ib" id="rl">⟳ Reload</button><button class="ib dv" data-w="375px">📱</button><button class="ib dv" data-w="768px">▭</button><button class="ib dv on" data-w="100%">🖥</button><button class="ib" id="op">Open tab</button><button class="ib" id="rs">📐 Fix responsive</button><button class="ib" id="fix" style="display:none;border-color:var(--er)">🛠 Fix errors</button></div><div class="pv"><iframe id="fr" sandbox="allow-scripts allow-forms allow-modals allow-popups" title="Preview"></iframe></div></section>
 <section class="pane" id="set"><div class="set gl">
@@ -287,7 +295,7 @@ async function ghPush(){const g=S.gh;
   await ghc('PATCH',`${R}/git/refs/heads/${br}`,{sha:c.sha});
   const u=`https://github.com/${o}/${n}`;$('#ghl').innerHTML=`Pushed ✓ <a href="${u}" target="_blank" rel="noopener">${o}/${n}</a> · <a href="https://app.netlify.com/start/deploy?repository=${u}" target="_blank" rel="noopener">Deploy on Netlify</a> · <a href="https://vercel.com/new/clone?repository-url=${u}" target="_blank" rel="noopener">Deploy on Vercel</a>`;toast('Pushed to GitHub ✓')
  }catch(e){toast('GitHub: '+e.message+(e.s==401?' (check token)':e.s==403||e.s==404?' (token needs repo scope)':''))}}
-function seg(){document.querySelectorAll('#seg button').forEach(b=>b.classList.toggle('on',b.dataset.md==(S.mode||'both')))}
+function seg(){const M={plan:'📝 Plan',build:'⚡ Build',both:'🧠 Plan + Build'},m=S.mode||'both';$('#mb').innerHTML=M[m]+' <span class="sm">▾</span>';document.querySelectorAll('#mm button').forEach(b=>b.classList.toggle('on',b.dataset.md==m))}
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>show(b.dataset.t));
 $('#send').onclick=()=>busy?ctl.abort():go();
 function go(){const i=$('#in'),t=i.value;i.value='';i.style.height='auto';fixN=0;cutN=0;run(t)}
@@ -316,7 +324,9 @@ $('#mdd').onmousedown=e=>{const m=e.target.dataset.m;if(m){e.preventDefault();$(
 document.addEventListener('click',e=>{if(!e.target.closest('#model,#mdd'))$('#mdd').style.display='none'});
 [['ght','t'],['ghr','r'],['ghb','b'],['ghm','m']].forEach(([i,k])=>$('#'+i).oninput=e=>{S.gh[k]=e.target.value.trim();save()});
 $('#ghp').onchange=e=>{S.gh.p=e.target.checked;save()};$('#px').onchange=e=>{S.px[S.prov]=e.target.checked;save()};
-$('#gh').onclick=$('#ghpush').onclick=ghPush;$('#seg').onclick=e=>{const m=e.target.dataset.md;if(m){S.mode=m;save();seg()}};
+$('#gh').onclick=$('#ghpush').onclick=ghPush;$('#mb').onclick=e=>{e.stopPropagation();$('#mp').classList.toggle('open')};
+$('#mm').onclick=e=>{const b=e.target.closest('button');if(b){S.mode=b.dataset.md;save();seg();$('#mp').classList.remove('open')}};
+document.addEventListener('click',e=>{if(!e.target.closest('#mp'))$('#mp').classList.remove('open')});
 $('#base').oninput=e=>{S.base[S.prov]=e.target.value.trim();save()};
 $('#auto').onchange=e=>{S.auto=e.target.checked?1:0;save()};
 $('#fm').onclick=fetchM;

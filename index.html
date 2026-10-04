@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b0d14"><title>Forge Agent</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0b0d14;--g:rgba(255,255,255,.06);--b:rgba(255,255,255,.12);--t:#e8eaf2;--m:#8b90a5;--a:#7c6cff;--c:#38bdf8;--ok:#34d399;--er:#f87171}
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
@@ -57,12 +57,68 @@ nav b{display:block;font-size:18px;font-weight:400}
 .set{max-width:720px;width:100%;margin:0 auto}
 @media(max-width:899px){.ex.ed #tree,.ex:not(.ed) .edp{display:none}#tree{flex:1}}
 @media(min-width:900px){.back{display:none}#chat{display:flex!important;flex:0 0 430px}nav [data-t=chat]{display:none}nav{max-width:420px;align-self:center}}
+
+:root{--bg:#0a0b0f;--g:rgba(255,255,255,.035);--b:rgba(255,255,255,.08);--t:#e6e8ee;--m:#8a8fa3;--a:#7b8cff;--c:#9db4ff;--ok:#5fd1a0;--er:#f27c7c;--cw:clamp(340px,34vw,460px)}
+*{scrollbar-width:thin;scrollbar-color:#2c3040 transparent}::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#2c3040;border-radius:8px}
+body{background:radial-gradient(900px 380px at 35% -12%,#7b8cff14,transparent),var(--bg)}
+.gl{box-shadow:0 8px 28px #0006;border-radius:14px}
+header{padding:calc(8px + env(safe-area-inset-top)) 14px 8px;gap:8px}
+header h1{font:600 14px Inter,sans-serif;background:none;color:var(--t);-webkit-text-fill-color:currentColor;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ib{border-radius:10px;padding:6px 10px;font-size:13px;transition:.15s}.ib:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16)}
+.ib.pri{background:var(--a);border-color:var(--a);color:#0a0b0f;font-weight:600}.ib.pri:hover{filter:brightness(1.1)}
+.bdg{font-size:11px;padding:2px 8px;border-radius:99px;background:rgba(255,255,255,.06);border:1px solid var(--b);color:var(--m);white-space:nowrap;max-width:130px;overflow:hidden;text-overflow:ellipsis;font-family:'JetBrains Mono',monospace}
+.send{background:var(--a);color:#0a0b0f;border-radius:10px}
+.user{background:#7b8cff1f;border-color:#7b8cff40}.seg button.on{background:#7b8cff26;color:var(--t)}
+.msg.bot{max-width:100%;width:100%;background:none;border:0;box-shadow:none;padding:6px 2px;backdrop-filter:none}
+input[type=checkbox]{appearance:none;-webkit-appearance:none;width:34px;height:20px;border-radius:99px;background:#2a2d3a;position:relative;cursor:pointer;transition:.2s;flex:none;margin-right:10px}
+input[type=checkbox]::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s}
+input[type=checkbox]:checked{background:var(--a)}input[type=checkbox]:checked::after{left:16px}
+.f label:has(input){display:flex;align-items:center;color:var(--t)}
+@media(hover:hover){[data-tip]{position:relative}[data-tip]:hover::after{content:attr(data-tip);position:absolute;top:calc(100% + 6px);right:0;background:#1a1d27;border:1px solid var(--b);padding:3px 8px;border-radius:7px;font-size:11px;white-space:nowrap;z-index:30;pointer-events:none}}
+#side{position:fixed;z-index:20;top:0;bottom:0;left:0;width:260px;transform:translateX(-102%);transition:transform .2s;background:#0d0f14;border-right:1px solid var(--b);padding:calc(14px + env(safe-area-inset-top)) 12px 12px;display:flex;flex-direction:column;gap:10px}
+#side.open{transform:none}#sc{position:fixed;inset:0;z-index:19;background:#0008;display:none}#sc.on{display:block}
+.brand{display:flex;align-items:center;gap:8px;font:600 15px 'Space Grotesk',sans-serif}.logo{color:var(--a)}
+.sl{color:var(--m);font-size:11px;padding:4px 6px}
+#plist{flex:1;overflow:auto;display:flex;flex-direction:column;gap:2px}
+.pi{display:flex;align-items:center;gap:2px;padding:7px 8px;border-radius:9px;cursor:pointer;color:var(--m)}.pi span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pi:hover{background:var(--g);color:var(--t)}.pi.on{background:rgba(255,255,255,.07);color:var(--t)}
+.pi button{background:none;border:0;opacity:0;cursor:pointer;color:var(--m);padding:2px 5px}.pi:hover button,.pi.on button{opacity:1}
+#rz{display:none}
+.tl{position:relative}.tl::before{content:'';position:absolute;left:4px;top:12px;bottom:12px;width:1px;background:var(--b)}
+.it{display:flex;align-items:center;gap:12px;padding:5px 0;color:var(--m);position:relative}
+.it i{flex:none;width:9px;height:9px;border-radius:50%;background:#3a3e50;box-shadow:0 0 0 3px #101218}
+.it.ok i{background:var(--ok)}.it.er i{background:var(--er)}.it.er{color:var(--er)}
+.it.run{color:var(--t);font-weight:500}.it.run i{background:none;border:2px solid var(--a);border-top-color:transparent;width:11px;height:11px;margin-left:-1px;animation:sp .8s linear infinite;animation-delay:var(--p1)}
+.it em{font-style:normal;font-size:11px;color:var(--m);padding:1px 7px;border-radius:99px;background:rgba(255,255,255,.06);font-family:'JetBrains Mono',monospace}
+.it b{font:500 12.5px 'JetBrains Mono',monospace}
+.it.run span{background:linear-gradient(90deg,var(--t) 30%,var(--m) 50%,var(--t) 70%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:sh 1.6s linear infinite;animation-delay:var(--p2)}
+details.it{display:block}details.it summary{display:flex;align-items:center;gap:12px;cursor:pointer;list-style:none}details.it summary::-webkit-details-marker{display:none}.tx{margin:4px 0 4px 21px;font-size:12px;color:var(--m);white-space:pre-wrap}
+@keyframes sp{to{transform:rotate(360deg)}}@keyframes sh{to{background-position:-200% 0}}
+.code{flex:1;min-height:0;display:flex;background:#0c0e13;border:1px solid var(--b);border-radius:12px;overflow:hidden;font:12.5px/20px 'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace}
+#gut{padding:12px 10px 40px;text-align:right;color:#444a60;user-select:none;overflow:hidden;white-space:pre;font-size:11.5px;min-width:44px;border-right:1px solid var(--b)}
+.cw{position:relative;flex:1;min-width:0}
+#hl,#ed{position:absolute;inset:0;margin:0;padding:12px 12px 40px;font:inherit;border:0;white-space:pre;tab-size:2}
+#hl{overflow:hidden;color:#c9d1e4;pointer-events:none}
+#ed{background:transparent;color:transparent;caret-color:#fff;resize:none;outline:0;overflow:auto;z-index:1;border-radius:0}#ed::selection{background:#7b8cff44}
+#al{position:absolute;left:0;right:0;height:20px;background:rgba(255,255,255,.04);pointer-events:none}
+.c{color:#5d6580;font-style:italic}.s{color:#9ad4a1}.k{color:#b69cff}.n{color:#f0b27a}.t{color:#7cc4ff}
+@media(min-width:900px){
+body{display:grid;grid-template-columns:232px var(--cw) 1fr;grid-template-rows:auto 1fr;grid-template-areas:"side head nav" "side main main"}
+#side{grid-area:side;position:static;transform:none;width:auto}#mn,#sc{display:none!important}
+header{grid-area:head}main{grid-area:main;gap:0;padding:0 12px 12px 0}
+nav{grid-area:nav;margin:0;padding:0 10px;border:0;border-bottom:1px solid var(--b);border-radius:0;background:none;box-shadow:none;backdrop-filter:none;max-width:none;align-self:stretch;justify-content:flex-start;align-items:flex-end}
+nav button{flex:none;padding:10px 14px;border-radius:0;font-size:13px}nav button.on{background:none;color:var(--t);box-shadow:inset 0 -2px var(--a)}
+nav b{display:inline;font-size:13px;margin-right:6px}#bd{right:2px;top:6px}
+#chat{flex:0 0 var(--cw);padding:0 10px 0 12px}
+.pane:not(#chat){border-left:1px solid var(--b);padding:10px 0 0 12px}
+#rz{display:block;position:fixed;top:0;bottom:0;left:calc(232px + var(--cw) - 3px);width:6px;cursor:col-resize;z-index:4}#rz:hover{background:#7b8cff33}
+}
 </style></head><body>
-<header><h1>Forge Agent</h1><button class="ib" id="undo" title="Undo last agent change">↩ Undo</button><button class="ib" id="zip">⬇ ZIP</button><button class="ib" id="gh">⬆ GitHub</button></header>
+<aside id="side"><div class="brand"><span class="logo">◆</span><b>Forge</b><span class="bdg">agent</span></div><button class="ib pri" id="np">＋ New chat</button><div class="sl">Chats</div><div id="plist"></div><button class="ib" id="clrall">🗑 Clear all history</button></aside><div id="sc"></div><div id="rz"></div>
+<header><button class="ib" id="mn">☰</button><h1 id="ttl">New chat</h1><span class="bdg" id="mdl"></span><button class="ib" id="undo" data-tip="Undo last agent run">↩</button><button class="ib" id="zip" data-tip="Download ZIP">⬇</button><button class="ib" id="gh" data-tip="Push to GitHub">⬆</button></header>
 <main>
 <section class="pane on" id="chat"><div class="log" id="log"></div>
 <div class="seg gl" id="seg"><button data-md="plan">📝 Plan</button><button data-md="build">⚡ Build</button><button data-md="both">🧠 Plan + Build</button></div><div class="bar gl"><textarea id="in" rows="1" placeholder="Describe the website you want…"></textarea><button class="send" id="send">Send</button></div></section>
-<section class="pane" id="fl"><div class="ex"><aside id="tree" class="gl"></aside><div class="edp"><div class="tb"><button class="ib back" id="bk">← Files</button><b class="sm" id="fn" style="flex:1;overflow:hidden;text-overflow:ellipsis"></b><button class="ib" id="nf">＋ File</button><button class="ib" id="df">🗑</button></div><textarea id="ed" spellcheck="false" placeholder="Pick a file from the tree. You can edit it here."></textarea></div></div></section>
+<section class="pane" id="fl"><div class="ex"><aside id="tree" class="gl"></aside><div class="edp"><div class="tb"><button class="ib back" id="bk">← Files</button><b class="sm" id="fn" style="flex:1;overflow:hidden;text-overflow:ellipsis"></b><button class="ib" id="nf">＋ File</button><button class="ib" id="df">🗑</button></div><div class="code"><div id="gut"></div><div class="cw"><div id="al"></div><pre id="hl" aria-hidden="true"></pre><textarea id="ed" spellcheck="false" wrap="off" placeholder="Pick a file from the tree."></textarea></div></div></div></div></section>
 <section class="pane" id="pv"><div class="tb"><button class="ib" id="rl">⟳ Reload</button><button class="ib dv" data-w="375px">📱</button><button class="ib dv" data-w="768px">▭</button><button class="ib dv on" data-w="100%">🖥</button><button class="ib" id="op">Open tab</button><button class="ib" id="fix" style="display:none;border-color:var(--er)">🛠 Fix errors</button></div><div class="pv"><iframe id="fr" sandbox="allow-scripts allow-forms allow-modals allow-popups" title="Preview"></iframe></div></section>
 <section class="pane" id="set"><div class="set gl">
 <div class="f"><label>Provider</label><select id="prov"></select></div>
@@ -77,7 +133,7 @@ nav b{display:block;font-size:18px;font-weight:400}
 <div class="f"><label>Commit message (optional)</label><input id="ghm" placeholder="Update from Forge Agent"></div>
 <div class="f"><label><input type="checkbox" id="ghp"> Create as private repo if it does not exist</label></div>
 <div class="tb"><button class="ib" id="ghpush">⬆ Push project to GitHub</button></div><p class="sm" id="ghl"></p>
-<div class="tb"><button class="ib" id="html">⬇ Single HTML</button><button class="ib" id="clr">New project</button></div>
+<div class="tb"><button class="ib" id="html">⬇ Single HTML</button><button class="ib" id="clr">Clear this chat</button></div>
 <p class="sm">Free options: OpenRouter ":free" models, Gemini, Groq, Cerebras, Ollama (local). Paid: OpenAI, Anthropic, DeepSeek, xAI, Mistral, Together.</p>
 </div></section>
 </main>
@@ -107,18 +163,32 @@ const SYS=`You are Forge, a senior front-end engineer and autonomous website-bui
 </plan>
 Then every created or changed file as <file path="index.html">COMPLETE file content</file> (always the full file, never diffs, no markdown fences inside). Remove a file with <delete path="old.html"/>. Finish with <summary>2-3 short sentences on what you built and what to try.</summary>
 Rules: static sites only (HTML, CSS, vanilla JS), entry file index.html, link local files by relative path like style.css and app.js. Mobile-first, responsive, modern polished design with a clear visual identity, semantic accessible HTML, real copy instead of lorem ipsum, working interactivity, no build step, no API keys in code. External libraries only from cdnjs.cloudflare.com or cdn.jsdelivr.net. No remote images: use inline SVG, CSS gradients or emoji. localStorage is allowed. When editing an existing project, output only the files that change. Reply in the user's language.`;
-let S=Object.assign({prov:'openrouter',key:{},mod:{},base:{},auto:1,px:{},gh:{},mode:'both'},JSON.parse(localStorage.fa_s||'{}'));let ML=[],shut=new Set();
+let S=Object.assign({prov:'openrouter',key:{},mod:{},base:{},auto:1,px:{},gh:{},mode:'both'},JSON.parse(localStorage.fa_s||'{}'));let ML=[],shut=new Set(),cutN=0;
 const MD={plan:'\n\n[MODE: PLAN. Do NOT write any files. Output only <think>, a detailed step-by-step <plan> (architecture, files, design, features, edge cases) and a <summary> asking me to approve.]',build:'\n\n[MODE: BUILD. Skip the long plan: one short <think>, a 2-4 line <plan>, then the files and <summary>.]',both:'\n\n[MODE: PLAN + BUILD. Think, write a detailed <plan>, then build every file.]'};
 let F=JSON.parse(localStorage.fa_f||'{}'),H=JSON.parse(localStorage.fa_h||'[]'),cf=Object.keys(F)[0]||'',busy=0,ctl,errs=[],fixN=0,dirty=1,page='index.html';
+let PR=JSON.parse(localStorage.fa_p||'null'),cid=localStorage.fa_c;
+if(PR){if(!PR[cid])cid=Object.keys(PR)[0];if(cid){F=PR[cid].F||{};H=PR[cid].H||[];cf=Object.keys(F)[0]||''}}
+if(!PR||!cid){PR=PR||{};cid='p'+Date.now();PR[cid]={n:H.length?String(H[0].content).slice(0,34):'New chat',t:Date.now()}}
 const log=$('#log'),cur=()=>{const p=P[S.prov]||P.openrouter;return{p,key:S.key[S.prov]||'',model:S.mod[S.prov]||p.m[0]||'',base:(S.base[S.prov]||p.u).replace(/\/$/,''),px:S.px[S.prov]!=null?S.px[S.prov]:!!p.px}};
-const save=()=>{try{localStorage.fa_s=JSON.stringify(S);localStorage.fa_f=JSON.stringify(F);localStorage.fa_h=JSON.stringify(H.slice(-40))}catch(e){}};
+const save=()=>{try{if(PR[cid])PR[cid]={n:PR[cid].n,t:PR[cid].t||Date.now(),F,H:H.slice(-40)};localStorage.fa_p=JSON.stringify(PR);localStorage.fa_c=cid||'';localStorage.fa_s=JSON.stringify(S)}catch(e){}};
 function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.opacity=0,2800)}
 function add(c,h){const d=document.createElement('div');d.className='msg gl '+c;d.innerHTML=h;log.append(d);log.scrollTop=log.scrollHeight;return d}
 function view(raw,done){
  const g=t=>{const m=raw.match(new RegExp('<'+t+'>([\\s\\S]*?)(</'+t+'>|$)'));return m?m[1].trim():''};
- const th=g('think'),pl=g('plan'),su=g('summary'),fs=[...raw.matchAll(/<file path="([^"]+)"|\[wrote: ([^\]]+)\]/g)].map(m=>m[1]||m[2]);
- const rest=raw.replace(/<(think|plan|summary)>[\s\S]*?(<\/\1>|$)/g,'').replace(/<file path[\s\S]*?(<\/file>|$)/g,'').replace(/<delete[^>]*>|\[wrote: [^\]]+\]/g,'').trim();
- return(th?`<details${done?'':' open'}><summary>🧠 Thinking</summary>${esc(th)}</details>`:'')+(pl?`<div class="plan">${pl.split('\n').filter(x=>x.trim()).map(x=>`<div class="${done?'d':''}">${done?'✓':'◻'} ${esc(x.replace(/^[-*•\d.)\s]+/,''))}</div>`).join('')}</div>`:'')+fs.map(f=>`<span class="chip">${done?'✓':'✎'} ${esc(f)}</span>`).join('')+(su?`<p>${esc(su)}</p>`:'')+(rest?`<p>${esc(rest)}</p>`:'')}
+ const th=g('think'),pl=g('plan'),su=g('summary'),fs=[];
+ raw.replace(/<file path="([^"]+)">([\s\S]*?)(<\/file>|$)/g,(_,p,c,e)=>{fs.push([p,c.split('\n').length,!!e])});
+ raw.replace(/\[wrote: ([^\]]+)\]/g,(_,p)=>{fs.push([p,0,1])});
+ const dl=[...raw.matchAll(/<delete path="([^"]+)"/g)].map(m=>m[1]);
+ const rest=raw.replace(/<(think|plan|summary)>[\s\S]*?(<\/\1>|$)/g,'').replace(/<file path[\s\S]*?(<\/file>|$)/g,'').replace(/```[\s\S]*?(```|$)/g,'').replace(/<delete[^>]*>|\[wrote: [^\]]+\]/g,'').trim();
+ const row=(s,t,x)=>`<div class="it ${s}"><i></i><span>${t}</span>${x?`<em>${x}</em>`:''}</div>`,steps=pl?pl.split('\n').filter(x=>x.trim()):[],past=done||pl&&fs.length||su;
+ let o='';
+ if(th)o+=`<details class="it ${past||pl?'ok':'run'}" ${past||pl?'':'open'}><summary><i></i><span>Thinking</span></summary><div class="tx">${esc(th)}</div></details>`;
+ else if(!pl&&!fs.length&&!su&&!rest)o+=row(done?'':'run','Thinking');
+ steps.forEach((x,i)=>{o+=row(done||fs.length||su||i<steps.length-1?'ok':'run',esc(x.replace(/^[-*•\d.)\s]+/,'')))});
+ fs.forEach(f=>{o+=row(f[2]?'ok':done?'er':'run',(f[2]?'Wrote ':done?'Cut off while writing ':'Writing ')+`<b>${esc(f[0])}</b>`,f[1]?f[1]+' lines':'')});
+ dl.forEach(p=>{o+=row('ok','Deleted <b>'+esc(p)+'</b>')});
+ const n=Date.now();
+ return`<div class="tl" style="--p1:-${n%800}ms;--p2:-${n%1600}ms">${o}</div>`+(su?`<p>${esc(su)}</p>`:'')+(rest?`<p>${esc(rest)}</p>`:'')}
 function welcome(){add('bot',`Tell me what to build and I will think, plan, write the files and show a live preview. I also fix my own errors.<div class="qs" id="qs">${['Dark portfolio for a photographer','Landing page for a coffee shop','Todo app with local storage','Analytics dashboard with charts'].map(q=>`<button data-q="${q}">${q}</button>`).join('')}</div>`)}
 function chatInit(){log.innerHTML='';if(!H.length)welcome();H.forEach(m=>add(m.role=='user'?'user':'bot',m.role=='user'?esc(m.content):view(m.content,1)))}
 const np=p=>p.trim().replace(/^(\.?\/)+/,'').replace(/\.\.\//g,'');
@@ -145,10 +215,10 @@ async function run(t,md){md=md||S.mode||'both';
  busy=1;$('#send').textContent='Stop';ctl=new AbortController();
  try{localStorage.fa_u=JSON.stringify({F,H})}catch(e){}
  const q=$('#qs');if(q)q.closest('.msg').remove();
- H.push({role:'user',content:t});add('user',esc(t));
- const el=add('bot','<span class="sm">● thinking…</span>');let raw='',er='';
- try{await llm([{role:'system',content:SYS},...H.slice(-11,-1),{role:'user',content:t+MD[md]+ctx()}],r=>{raw=r;el.innerHTML=view(r);log.scrollTop=log.scrollHeight},ctl.signal)}
- catch(e){const m=e.message||'',ab=e.name=='AbortError';let hn='';
+ H.push({role:'user',content:t});if(PR[cid]){if(PR[cid].n=='New chat')PR[cid].n=t.slice(0,34);PR[cid].t=Date.now()}add('user',esc(t));plist();
+ const el=add('bot','<span class="sm">● thinking…</span>');let raw='',er='',ab0=0,t0=0;
+ try{await llm([{role:'system',content:SYS},...H.slice(-11,-1),{role:'user',content:t+MD[md]+ctx()}],r=>{raw=r;const n=Date.now();if(n-t0>120){t0=n;el.innerHTML=view(r);log.scrollTop=log.scrollHeight}},ctl.signal)}
+ catch(e){const m=e.message||'',ab=e.name=='AbortError';ab0=ab;let hn='';
   if(!ab){if(/^(410|404)\b/.test(m)||(/model/i.test(m)&&/(not found|end of life|unavailable|does not exist)/i.test(m)))hn='This model is not available any more. Open Settings, tap the Model box and pick another one from the live list.';
   else if(/^(500|502|503|504)\b/.test(m)||/timed out/i.test(m))hn='The provider is too slow or busy. Pick a smaller or faster model, or switch to Groq, Gemini or OpenRouter (they need no proxy).';
   else if(/^401\b/.test(m))hn='API key missing or wrong for this provider. Check Settings.';
@@ -162,6 +232,8 @@ async function run(t,md){md=md||S.mode||'both';
  H.push({role:'assistant',content:raw.replace(/<file path="([^"]+)">[\s\S]*?(<\/file>|$)/g,'[wrote: $1]')||'(no reply)'});
  if(ch){if(!F[page])page='index.html';dirty=1;errs=[];badge();tabs();if(innerWidth<900)show('pv');else pv()}
  save();busy=0;$('#send').textContent='Send';
+ const op=(raw.match(/<file path="/g)||[]).length,cc=(raw.match(/<\/file>/g)||[]).length;
+ if(op>cc&&!ab0&&cutN<2){cutN++;const nm=[...raw.matchAll(/<file path="([^"]+)"/g)].pop()[1];setTimeout(()=>run('Your previous reply was cut off while writing '+nm+'. Output the complete '+nm+' file again, nothing else.','build'),400);return}
  if(ch&&S.auto)setTimeout(()=>{if(errs.length&&fixN<2&&!busy){fixN++;run('Auto-check: these runtime errors appeared in the preview. Fix them.\n'+errs.join('\n'),'build')}},2400)}
 function build(pg){
  let h=F[pg]||F['index.html'];
@@ -178,8 +250,8 @@ function tabs(){if(!F[cf])cf=F['index.html']!=null?'index.html':Object.keys(F)[0
  const ic=k=>({html:'🌐',css:'🎨',js:'📜',json:'🧾',md:'📝',svg:'🖼'}[k.split('.').pop()]||'📄');
  const r=(n,d,pre)=>Object.entries(n).sort((a,b)=>(typeof b[1]=='object')-(typeof a[1]=='object')||a[0].localeCompare(b[0])).map(([k,v])=>typeof v=='object'?`<div class="ti" style="padding-left:${d*14+8}px" data-f="${esc(pre+k)}">${shut.has(pre+k)?'▸':'▾'} 📁 ${esc(k)}</div>`+(shut.has(pre+k)?'':r(v,d+1,pre+k+'/')):`<div class="ti ${v==cf?'on':''}" style="padding-left:${d*14+8}px" data-p="${esc(v)}">${ic(k)} ${esc(k)}</div>`).join('');
  $('#tree').innerHTML=Object.keys(F).length?`<div class="sm" style="padding:4px 8px">Project · ${Object.keys(F).length} files</div>`+r(t,0,''):'<div class="sm" style="padding:8px">No files yet. Ask the agent to build something.</div>';
- $('#ed').value=F[cf]??'';$('#ed').disabled=!cf;$('#fn').textContent=cf;if(!cf)$('.ex').classList.remove('ed')}
-function sets(){const c=cur();$('#prov').innerHTML=Object.entries(P).map(([k,v])=>`<option value="${k}" ${k==S.prov?'selected':''}>${v.n}</option>`).join('');$('#key').value=c.key;$('#base').value=c.base;$('#model').value=c.model;ML=c.p.m.slice();$('#kl').innerHTML=c.p.k?`<a href="${c.p.k}" target="_blank" rel="noopener">Get an API key</a>`:'';$('#auto').checked=!!S.auto;$('#px').checked=c.px;const g=S.gh;$('#ght').value=g.t||'';$('#ghr').value=g.r||'';$('#ghb').value=g.b||'';$('#ghm').value=g.m||'';$('#ghp').checked=!!g.p}
+ $('#ed').value=F[cf]??'';$('#ed').disabled=!cf;$('#fn').textContent=cf;if(!cf)$('.ex').classList.remove('ed');edr()}
+function sets(){const c=cur();$('#prov').innerHTML=Object.entries(P).map(([k,v])=>`<option value="${k}" ${k==S.prov?'selected':''}>${v.n}</option>`).join('');$('#key').value=c.key;$('#base').value=c.base;$('#model').value=c.model;ML=c.p.m.slice();$('#kl').innerHTML=c.p.k?`<a href="${c.p.k}" target="_blank" rel="noopener">Get an API key</a>`:'';$('#auto').checked=!!S.auto;$('#px').checked=c.px;const g=S.gh;$('#ght').value=g.t||'';$('#ghr').value=g.r||'';$('#ghb').value=g.b||'';$('#ghm').value=g.m||'';$('#ghp').checked=!!g.p;plist()}
 function show(t){if(t=='chat'&&innerWidth>=900)t='pv';document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id==t));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t==t));if(t=='pv')pv();if(t=='fl')tabs();if(t=='set')sets()}
 function dl(b,n){const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
 async function fetchM(q){const c=cur();try{const h={};if(c.p.a){h['x-api-key']=c.key;h['anthropic-version']='2023-06-01';h['anthropic-dangerous-direct-browser-access']='true'}else if(c.key)h.authorization='Bearer '+c.key;
@@ -208,13 +280,13 @@ async function ghPush(){const g=S.gh;
 function seg(){document.querySelectorAll('#seg button').forEach(b=>b.classList.toggle('on',b.dataset.md==(S.mode||'both')))}
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>show(b.dataset.t));
 $('#send').onclick=()=>busy?ctl.abort():go();
-function go(){const i=$('#in'),t=i.value;i.value='';i.style.height='auto';fixN=0;run(t)}
+function go(){const i=$('#in'),t=i.value;i.value='';i.style.height='auto';fixN=0;cutN=0;run(t)}
 $('#in').oninput=e=>{e.target.style.height='auto';e.target.style.height=e.target.scrollHeight+'px'};
 $('#in').onkeydown=e=>{if(e.key=='Enter'&&!e.shiftKey&&innerWidth>=900){e.preventDefault();busy||go()}};
 log.onclick=e=>{const d=e.target.dataset;if(d.q)run(d.q);if(d.run){e.target.closest('.qs').remove();run('Build the plan above exactly as planned.','build')}};
 $('#tree').onclick=e=>{const el=e.target.closest('.ti');if(!el)return;const d=el.dataset;if(d.f){shut.has(d.f)?shut.delete(d.f):shut.add(d.f)}else if(d.p){cf=d.p;$('.ex').classList.add('ed')}tabs()};
 $('#bk').onclick=()=>$('.ex').classList.remove('ed');
-$('#ed').oninput=e=>{F[cf]=e.target.value;dirty=1;save()};
+$('#ed').oninput=e=>{F[cf]=e.target.value;dirty=1;save();edr()};
 $('#nf').onclick=()=>{const n=np(prompt('New file name (e.g. about.html)')||'');if(n){F[n]=F[n]||'';cf=n;$('.ex').classList.add('ed');dirty=1;save();tabs()}};
 $('#df').onclick=()=>{if(cf&&confirm('Delete '+cf+'?')){delete F[cf];$('.ex').classList.remove('ed');dirty=1;save();tabs()}};
 $('#rl').onclick=()=>{dirty=1;errs=[];badge();pv()};
@@ -227,9 +299,9 @@ $('#html').onclick=()=>{if(!F['index.html'])return toast('No index.html yet');dl
 $('#clr').onclick=()=>{if(busy||!confirm('Clear all files and chat?'))return;localStorage.fa_u=JSON.stringify({F,H});F={};H=[];cf='';page='index.html';dirty=1;errs=[];badge();save();tabs();chatInit();show('chat')};
 $('#prov').onchange=e=>{S.prov=e.target.value;save();sets()};
 $('#key').oninput=e=>{S.key[S.prov]=e.target.value.trim();save()};
-$('#model').oninput=e=>{S.mod[S.prov]=e.target.value.trim();save();mdd()};
+$('#model').oninput=e=>{S.mod[S.prov]=e.target.value.trim();save();mdd();plist()};
 $('#model').onfocus=()=>{if(!ML.f&&cur().key)fetchM(1);mdd()};
-$('#mdd').onmousedown=e=>{const m=e.target.dataset.m;if(m){e.preventDefault();$('#model').value=m;S.mod[S.prov]=m;save();$('#mdd').style.display='none'}};
+$('#mdd').onmousedown=e=>{const m=e.target.dataset.m;if(m){e.preventDefault();$('#model').value=m;S.mod[S.prov]=m;save();plist();$('#mdd').style.display='none'}};
 document.addEventListener('click',e=>{if(!e.target.closest('#model,#mdd'))$('#mdd').style.display='none'});
 [['ght','t'],['ghr','r'],['ghb','b'],['ghm','m']].forEach(([i,k])=>$('#'+i).oninput=e=>{S.gh[k]=e.target.value.trim();save()});
 $('#ghp').onchange=e=>{S.gh.p=e.target.checked;save()};$('#px').onchange=e=>{S.px[S.prov]=e.target.checked;save()};
@@ -240,5 +312,28 @@ $('#fm').onclick=fetchM;
 addEventListener('message',e=>{if(e.source!==$('#fr').contentWindow)return;const d=e.data||{};
  if(d.fa==1&&errs.length<5&&!errs.includes(d.m)){errs.push(d.m);badge()}
  if(d.fa==2){const p=np(d.p);if(F[p]){page=p;dirty=1;pv()}}});
-tabs();sets();seg();chatInit();show(innerWidth>=900?'pv':'chat');
+function hi(c,f){const x=f.split('.').pop(),e=c.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+ const JS=/(\/\/.*|\/\*[\s\S]*?\*\/)|("(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'|`(?:[^`\\]|\\.)*`)|\b(const|let|var|function|return|if|else|for|while|class|new|import|export|from|async|await|try|catch|switch|case|break|default|this|true|false|null|undefined|typeof|of|in)\b|(\b\d[\d.]*\b)/g;
+ const CS=/(\/\*[\s\S]*?\*\/)|("(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*')|(#[0-9a-fA-F]{3,8}\b|\b[a-z-]+(?=\s*:))|(\b\d[\d.]*(?:px|rem|em|%|vh|vw|s|ms|deg)?)/g;
+ const HT=/(&lt;!--[\s\S]*?-->)|("(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*')|(&lt;\/?[\w-]+)|(\b(?:const|let|var|function|return|if|else|for|class|new|true|false|null)\b)/g;
+ const m={js:JS,mjs:JS,json:JS,css:CS,html:HT,htm:HT}[x];if(!m)return e;const k=x=='html'||x=='htm'?['c','s','t','k']:['c','s','k','n'];
+ return e.replace(m,(t,...a)=>{const i=a.slice(0,4).findIndex(v=>v!=null);return i<0?t:`<span class="${k[i]}">${t}</span>`})}
+function edr(){const ed=$('#ed'),v=ed.value;$('#hl').innerHTML=hi(v,cf||'')+'\n';$('#gut').textContent=Array.from({length:v.split('\n').length},(_,i)=>i+1).join('\n');$('#gut').scrollTop=ed.scrollTop;al()}
+function al(){const ed=$('#ed'),ln=ed.value.slice(0,ed.selectionStart).split('\n').length-1;$('#al').style.top=(12+ln*20-ed.scrollTop)+'px';$('#al').style.display=cf?'block':'none'}
+$('#ed').onscroll=e=>{$('#hl').scrollTop=e.target.scrollTop;$('#hl').scrollLeft=e.target.scrollLeft;$('#gut').scrollTop=e.target.scrollTop;al()};
+$('#ed').onkeyup=$('#ed').onclick=al;
+$('#ed').onkeydown=e=>{if(e.key=='Tab'){e.preventDefault();const t=e.target;t.setRangeText('  ',t.selectionStart,t.selectionEnd,'end');t.dispatchEvent(new Event('input'))}};
+function plist(){const l=Object.entries(PR).sort((a,b)=>(b[1].t||0)-(a[1].t||0));
+ $('#plist').innerHTML=l.map(([id,p])=>`<div class="pi ${id==cid?'on':''}" data-id="${id}"><span>${esc(p.n||'New chat')}</span><button data-ren="${id}" title="Rename">✎</button><button data-del="${id}" title="Delete">🗑</button></div>`).join('')||'<div class="sm" style="padding:8px">No chats yet</div>';
+ $('#ttl').textContent=(PR[cid]&&PR[cid].n)||'New chat';$('#mdl').textContent=cur().model.split('/').pop().slice(0,18)}
+function openP(id){if(busy)return toast('Wait for the agent to finish');if(PR[cid])save();cid=id;F=PR[id].F||{};H=PR[id].H||[];cf='';page='index.html';dirty=1;errs=[];badge();tabs();chatInit();plist();$('#side').classList.remove('open');$('#sc').classList.remove('on');save();show('chat')}
+function newP(){if(busy)return toast('Wait for the agent to finish');const id='p'+Date.now();PR[id]={n:'New chat',t:Date.now(),F:{},H:[]};openP(id)}
+function delP(id){if(busy||!confirm('Delete this chat and its files?'))return;delete PR[id];if(id==cid){const k=Object.keys(PR);k.length?openP(k[0]):newP()}else{save();plist()}}
+$('#plist').onclick=e=>{const d=e.target.dataset;if(d.del)return delP(d.del);if(d.ren){const n=prompt('Rename chat',PR[d.ren].n);if(n){PR[d.ren].n=n.slice(0,40);save();plist()}return}const p=e.target.closest('.pi');if(p)openP(p.dataset.id)};
+$('#np').onclick=newP;
+$('#clrall').onclick=()=>{if(busy||!confirm('Delete ALL chats and files?'))return;PR={};cid='';newP()};
+$('#mn').onclick=()=>{$('#side').classList.add('open');$('#sc').classList.add('on')};
+$('#sc').onclick=()=>{$('#side').classList.remove('open');$('#sc').classList.remove('on')};
+$('#rz').onpointerdown=e=>{e.preventDefault();const mv=ev=>document.documentElement.style.setProperty('--cw',Math.min(720,Math.max(320,ev.clientX-232))+'px'),up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up)};addEventListener('pointermove',mv);addEventListener('pointerup',up)};
+tabs();sets();seg();chatInit();plist();show(innerWidth>=900?'pv':'chat');
 </script></body></html>

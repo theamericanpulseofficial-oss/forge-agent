@@ -91,7 +91,7 @@ openrouter:{n:'OpenRouter · free + paid',u:'https://openrouter.ai/api/v1',k:'ht
 gemini:{n:'Google Gemini · free tier',u:'https://generativelanguage.googleapis.com/v1beta/openai',k:'https://aistudio.google.com/apikey',m:['gemini-2.5-flash','gemini-2.5-pro','gemini-2.5-flash-lite']},
 groq:{n:'Groq · free tier',u:'https://api.groq.com/openai/v1',k:'https://console.groq.com/keys',m:['llama-3.3-70b-versatile','openai/gpt-oss-120b','qwen/qwen3-32b']},
 cerebras:{n:'Cerebras · free tier',u:'https://api.cerebras.ai/v1',k:'https://cloud.cerebras.ai',m:['qwen-3-coder-480b','gpt-oss-120b','llama-3.3-70b']},
-nvidia:{n:'NVIDIA NIM · free credits',u:'https://integrate.api.nvidia.com/v1',k:'https://build.nvidia.com/settings/api-keys',px:1,m:['qwen/qwen3-coder-480b-a35b-instruct','meta/llama-3.3-70b-instruct','deepseek-ai/deepseek-r1','nvidia/llama-3.3-nemotron-super-49b-v1.5','moonshotai/kimi-k2-instruct']},
+nvidia:{n:'NVIDIA NIM · free credits',u:'https://integrate.api.nvidia.com/v1',k:'https://build.nvidia.com/settings/api-keys',px:1,m:['meta/llama-3.3-70b-instruct','nvidia/llama-3.3-nemotron-super-49b-v1.5','moonshotai/kimi-k2-instruct']},
 mistral:{n:'Mistral · free + paid',u:'https://api.mistral.ai/v1',k:'https://console.mistral.ai/api-keys',m:['codestral-latest','mistral-large-latest','mistral-small-latest']},
 anthropic:{n:'Anthropic Claude · paid',u:'https://api.anthropic.com/v1',k:'https://console.anthropic.com/settings/keys',a:1,m:['claude-sonnet-5-5','claude-opus-5-5','claude-haiku-4-5-20251001']},
 openai:{n:'OpenAI · paid',u:'https://api.openai.com/v1',k:'https://platform.openai.com/api-keys',m:['gpt-5','gpt-5-mini','gpt-4.1']},
@@ -148,7 +148,12 @@ async function run(t,md){md=md||S.mode||'both';
  H.push({role:'user',content:t});add('user',esc(t));
  const el=add('bot','<span class="sm">● thinking…</span>');let raw='',er='';
  try{await llm([{role:'system',content:SYS},...H.slice(-11,-1),{role:'user',content:t+MD[md]+ctx()}],r=>{raw=r;el.innerHTML=view(r);log.scrollTop=log.scrollHeight},ctl.signal)}
- catch(e){er=`<p style="color:var(--er)">⚠ ${esc(e.name=='AbortError'?'Stopped':e.message)}</p>`}
+ catch(e){const m=e.message||'',ab=e.name=='AbortError';let hn='';
+  if(!ab){if(/^(410|404)\b/.test(m)||(/model/i.test(m)&&/(not found|end of life|unavailable|does not exist)/i.test(m)))hn='This model is not available any more. Open Settings, tap the Model box and pick another one from the live list.';
+  else if(/^(500|502|503|504)\b/.test(m)||/timed out/i.test(m))hn='The provider is too slow or busy. Pick a smaller or faster model, or switch to Groq, Gemini or OpenRouter (they need no proxy).';
+  else if(/^401\b/.test(m))hn='API key missing or wrong for this provider. Check Settings.';
+  else if(/^429\b/.test(m))hn='Rate limit reached. Wait a minute or switch model/provider.'}
+  er=`<p style="color:var(--er)">⚠ ${esc(ab?'Stopped':m)}</p>`+(hn?`<p class="sm">${esc(hn)}</p>`:'')}
  let ch=0;
  raw.replace(/<file path="([^"]+)">\n?([\s\S]*?)<\/file>/g,(_,p,x)=>{F[np(p)]=cl(x);ch++});
  raw.replace(/<delete path="([^"]+)"\s*\/?>/g,(_,p)=>{delete F[np(p)];ch++});

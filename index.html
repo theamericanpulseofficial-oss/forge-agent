@@ -112,6 +112,12 @@ nav b{display:inline;font-size:13px;margin-right:6px}#bd{right:2px;top:6px}
 .pane:not(#chat){border-left:1px solid var(--b);padding:10px 0 0 12px}
 #rz{display:block;position:fixed;top:0;bottom:0;left:calc(232px + var(--cw) - 3px);width:6px;cursor:col-resize;z-index:4}#rz:hover{background:#7b8cff33}
 }
+
+.sum{background:rgba(255,255,255,.03);border:1px solid var(--b);border-radius:12px;padding:10px 12px}
+.sh{font:600 12px Inter,sans-serif;color:var(--m);margin-bottom:6px}
+.tx2{margin-top:6px;color:var(--m);font-size:12px}.tx2 summary{cursor:pointer}
+:root{--sw:232px}
+@media(min-width:900px){body{grid-template-columns:var(--sw) var(--cw) 1fr}body.nosb{--sw:0px}body.nosb #side{display:none}#rz{left:calc(var(--sw) + var(--cw) - 3px)}#mn{display:inline-block!important}}
 </style></head><body>
 <aside id="side"><div class="brand"><span class="logo">◆</span><b>Forge</b><span class="bdg">agent</span></div><button class="ib pri" id="np">＋ New chat</button><div class="sl">Chats</div><div id="plist"></div><button class="ib" id="clrall">🗑 Clear all history</button></aside><div id="sc"></div><div id="rz"></div>
 <header><button class="ib" id="mn">☰</button><h1 id="ttl">New chat</h1><span class="bdg" id="mdl"></span><button class="ib" id="undo" data-tip="Undo last agent run">↩</button><button class="ib" id="zip" data-tip="Download ZIP">⬇</button><button class="ib" id="gh" data-tip="Push to GitHub">⬆</button></header>
@@ -119,7 +125,7 @@ nav b{display:inline;font-size:13px;margin-right:6px}#bd{right:2px;top:6px}
 <section class="pane on" id="chat"><div class="log" id="log"></div>
 <div class="seg gl" id="seg"><button data-md="plan">📝 Plan</button><button data-md="build">⚡ Build</button><button data-md="both">🧠 Plan + Build</button></div><div class="bar gl"><textarea id="in" rows="1" placeholder="Describe the website you want…"></textarea><button class="send" id="send">Send</button></div></section>
 <section class="pane" id="fl"><div class="ex"><aside id="tree" class="gl"></aside><div class="edp"><div class="tb"><button class="ib back" id="bk">← Files</button><b class="sm" id="fn" style="flex:1;overflow:hidden;text-overflow:ellipsis"></b><button class="ib" id="nf">＋ File</button><button class="ib" id="df">🗑</button></div><div class="code"><div id="gut"></div><div class="cw"><div id="al"></div><pre id="hl" aria-hidden="true"></pre><textarea id="ed" spellcheck="false" wrap="off" placeholder="Pick a file from the tree."></textarea></div></div></div></div></section>
-<section class="pane" id="pv"><div class="tb"><button class="ib" id="rl">⟳ Reload</button><button class="ib dv" data-w="375px">📱</button><button class="ib dv" data-w="768px">▭</button><button class="ib dv on" data-w="100%">🖥</button><button class="ib" id="op">Open tab</button><button class="ib" id="fix" style="display:none;border-color:var(--er)">🛠 Fix errors</button></div><div class="pv"><iframe id="fr" sandbox="allow-scripts allow-forms allow-modals allow-popups" title="Preview"></iframe></div></section>
+<section class="pane" id="pv"><div class="tb"><button class="ib" id="rl">⟳ Reload</button><button class="ib dv" data-w="375px">📱</button><button class="ib dv" data-w="768px">▭</button><button class="ib dv on" data-w="100%">🖥</button><button class="ib" id="op">Open tab</button><button class="ib" id="rs">📐 Fix responsive</button><button class="ib" id="fix" style="display:none;border-color:var(--er)">🛠 Fix errors</button></div><div class="pv"><iframe id="fr" sandbox="allow-scripts allow-forms allow-modals allow-popups" title="Preview"></iframe></div></section>
 <section class="pane" id="set"><div class="set gl">
 <div class="f"><label>Provider</label><select id="prov"></select></div>
 <div class="f"><label>API key (kept only in this browser)</label><input id="key" type="password" autocomplete="off" placeholder="Paste key"><span class="sm" id="kl"></span></div>
@@ -162,7 +168,11 @@ const SYS=`You are Forge, a senior front-end engineer and autonomous website-bui
 - one concrete step per line
 </plan>
 Then every created or changed file as <file path="index.html">COMPLETE file content</file> (always the full file, never diffs, no markdown fences inside). Remove a file with <delete path="old.html"/>. Finish with <summary>2-3 short sentences on what you built and what to try.</summary>
-Rules: static sites only (HTML, CSS, vanilla JS), entry file index.html, link local files by relative path like style.css and app.js. Mobile-first, responsive, modern polished design with a clear visual identity, semantic accessible HTML, real copy instead of lorem ipsum, working interactivity, no build step, no API keys in code. External libraries only from cdnjs.cloudflare.com or cdn.jsdelivr.net. No remote images: use inline SVG, CSS gradients or emoji. localStorage is allowed. When editing an existing project, output only the files that change. Reply in the user's language.`;
+Rules: static sites only (HTML, CSS, vanilla JS), entry file index.html, link local files by relative path like style.css and app.js. Mobile-first, responsive, modern polished design with a clear visual identity, semantic accessible HTML, real copy instead of lorem ipsum, working interactivity, no build step, no API keys in code. External libraries only from cdnjs.cloudflare.com or cdn.jsdelivr.net. No remote images: use inline SVG, CSS gradients or emoji. localStorage is allowed. When editing an existing project, output only the files that change. Reply in the user's language.
+RESPONSIVE (mandatory): include <meta name="viewport" content="width=device-width, initial-scale=1">; write mobile-first CSS with breakpoints near 640px and 1024px; use flex/grid, clamp(), max-width and min-width:0, never fixed pixel widths for layout; navigation must collapse (sidebar becomes a drawer or bottom bar below 768px, never both visible); touch targets at least 44px; no horizontal scrolling. In <think> check the layout mentally at 360px, 768px and 1280px before writing.
+PREVIEW LIMITS: the preview is a sandboxed iframe. Do not use service workers, pushState/URL routing or location changes. For multi-page sites use plain relative links to project files such as about.html; for single-page apps use in-page sections or hash links. Handle forms in JS.
+FORMAT: never put code or markdown headings outside <file> blocks. If the user only asks a question about Forge or how to do something, answer in plain words inside <summary> only, with no plan and no files.
+ABOUT FORGE (you run inside it, so you know it fully): The left sidebar has New chat, rename, delete and Clear all history; each chat is a separate project with its own files. On phones a bottom bar, on desktop tabs, switch Chat, Files, Preview and Settings. The mode switch above the message box has Plan (plan only, then a Build this plan button), Build (writes files fast) and Plan + Build. The Files tab shows the file tree; tap a file to open and edit it with syntax colors; to delete a file, open it and press the trash button at the top right; the plus File button creates a file (use a path like css/style.css for folders). The Preview tab has Reload, phone/tablet/desktop width buttons, Open tab, Fix responsive and Fix errors. Top bar buttons: undo last agent run, download ZIP, push to GitHub. Settings: choose a provider (OpenRouter, Gemini, Groq, Cerebras, NVIDIA, Mistral, Anthropic, OpenAI, DeepSeek, xAI, Together, Ollama, custom), paste the API key, type to search models or fetch all models, base URL, auto-fix toggle, proxy toggle (needed only for NVIDIA), and GitHub token, repo, branch and commit message with a Push button. The menu button hides or shows the sidebar and the divider between chat and panel can be dragged. Keys stay in the browser.`;
 let S=Object.assign({prov:'openrouter',key:{},mod:{},base:{},auto:1,px:{},gh:{},mode:'both'},JSON.parse(localStorage.fa_s||'{}'));let ML=[],shut=new Set(),cutN=0;
 const MD={plan:'\n\n[MODE: PLAN. Do NOT write any files. Output only <think>, a detailed step-by-step <plan> (architecture, files, design, features, edge cases) and a <summary> asking me to approve.]',build:'\n\n[MODE: BUILD. Skip the long plan: one short <think>, a 2-4 line <plan>, then the files and <summary>.]',both:'\n\n[MODE: PLAN + BUILD. Think, write a detailed <plan>, then build every file.]'};
 let F=JSON.parse(localStorage.fa_f||'{}'),H=JSON.parse(localStorage.fa_h||'[]'),cf=Object.keys(F)[0]||'',busy=0,ctl,errs=[],fixN=0,dirty=1,page='index.html';
@@ -175,20 +185,19 @@ function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity=1;clearTim
 function add(c,h){const d=document.createElement('div');d.className='msg gl '+c;d.innerHTML=h;log.append(d);log.scrollTop=log.scrollHeight;return d}
 function view(raw,done){
  const g=t=>{const m=raw.match(new RegExp('<'+t+'>([\\s\\S]*?)(</'+t+'>|$)'));return m?m[1].trim():''};
- const th=g('think'),pl=g('plan'),su=g('summary'),fs=[];
+ const th=g('think'),pl=g('plan'),su=g('summary'),fs=[],n=Date.now(),ph=`--p1:-${n%800}ms;--p2:-${n%1600}ms`;
  raw.replace(/<file path="([^"]+)">([\s\S]*?)(<\/file>|$)/g,(_,p,c,e)=>{fs.push([p,c.split('\n').length,!!e])});
  raw.replace(/\[wrote: ([^\]]+)\]/g,(_,p)=>{fs.push([p,0,1])});
- const dl=[...raw.matchAll(/<delete path="([^"]+)"/g)].map(m=>m[1]);
- const rest=raw.replace(/<(think|plan|summary)>[\s\S]*?(<\/\1>|$)/g,'').replace(/<file path[\s\S]*?(<\/file>|$)/g,'').replace(/```[\s\S]*?(```|$)/g,'').replace(/<delete[^>]*>|\[wrote: [^\]]+\]/g,'').trim();
- const row=(s,t,x)=>`<div class="it ${s}"><i></i><span>${t}</span>${x?`<em>${x}</em>`:''}</div>`,steps=pl?pl.split('\n').filter(x=>x.trim()):[],past=done||pl&&fs.length||su;
- let o='';
- if(th)o+=`<details class="it ${past||pl?'ok':'run'}" ${past||pl?'':'open'}><summary><i></i><span>Thinking</span></summary><div class="tx">${esc(th)}</div></details>`;
- else if(!pl&&!fs.length&&!su&&!rest)o+=row(done?'':'run','Thinking');
- steps.forEach((x,i)=>{o+=row(done||fs.length||su||i<steps.length-1?'ok':'run',esc(x.replace(/^[-*•\d.)\s]+/,'')))});
- fs.forEach(f=>{o+=row(f[2]?'ok':done?'er':'run',(f[2]?'Wrote ':done?'Cut off while writing ':'Writing ')+`<b>${esc(f[0])}</b>`,f[1]?f[1]+' lines':'')});
+ const dl=[...raw.matchAll(/<delete path="([^"]+)"/g)].map(m=>m[1]),row=(s,t,x)=>`<div class="it ${s}"><i></i><span>${t}</span>${x?`<em>${x}</em>`:''}</div>`;
+ if(!done){const l=fs[fs.length-1],w=l&&!l[2],t=w?`Writing <b>${esc(l[0])}</b>`:fs.length?'Working':pl&&!/<\/plan>/.test(raw)?'Planning':su?'Summarising':pl?'Starting to build':'Thinking';
+  return`<div class="tl" style="${ph}">${row('run',t,w?l[1]+' lines':'')}</div>`}
+ const cl=x=>x.replace(/^#{1,6}\s*/gm,'').replace(/\*\*|`/g,'').trim(),steps=pl?pl.split('\n').filter(x=>x.trim()).map(x=>esc(x.replace(/^[-*•\d.)\s]+/,''))):[],q=!fs.length&&!dl.length;
+ const rest=raw.replace(/<(think|plan|summary)>[\s\S]*?(<\/\1>|$)/g,'').replace(/<file path[\s\S]*?(<\/file>|$)/g,'').replace(/```[\s\S]*?(```|$)/g,'').replace(/<delete[^>]*>|\[wrote: [^\]]+\]/g,'');
+ let o='';steps.forEach(x=>o+=row(q?'':'ok',x));
+ fs.forEach(f=>{o+=row(f[2]?'ok':'er',(f[2]?'Wrote ':'Cut off while writing ')+`<b>${esc(f[0])}</b>`,f[1]?f[1]+' lines':'')});
  dl.forEach(p=>{o+=row('ok','Deleted <b>'+esc(p)+'</b>')});
- const n=Date.now();
- return`<div class="tl" style="--p1:-${n%800}ms;--p2:-${n%1600}ms">${o}</div>`+(su?`<p>${esc(su)}</p>`:'')+(rest?`<p>${esc(rest)}</p>`:'')}
+ const body=cl(su||(q&&!steps.length?rest:'')),title=q?(steps.length?'Plan':''):'Summary';
+ return(o?`<div class="sum"><div class="sh">${title}</div><div class="tl" style="${ph}">${o}</div>${th?`<details class="tx2"><summary>Thought process</summary><div class="tx">${esc(th)}</div></details>`:''}</div>`:'')+(body?`<p>${esc(body)}</p>`:'')}
 function welcome(){add('bot',`Tell me what to build and I will think, plan, write the files and show a live preview. I also fix my own errors.<div class="qs" id="qs">${['Dark portfolio for a photographer','Landing page for a coffee shop','Todo app with local storage','Analytics dashboard with charts'].map(q=>`<button data-q="${q}">${q}</button>`).join('')}</div>`)}
 function chatInit(){log.innerHTML='';if(!H.length)welcome();H.forEach(m=>add(m.role=='user'?'user':'bot',m.role=='user'?esc(m.content):view(m.content,1)))}
 const np=p=>p.trim().replace(/^(\.?\/)+/,'').replace(/\.\.\//g,'');
@@ -208,6 +217,7 @@ async function llm(msgs,tok,sig){
  const h={'content-type':'application/json'};if(c.key)h.authorization='Bearer '+c.key;
  const r=await call(c,'/chat/completions',{method:'POST',signal:sig,headers:h,body:JSON.stringify({model:c.model,messages:msgs,stream:true})});let rs=0;
  return sse(r,tok,j=>{const d=(j.choices&&j.choices[0]&&j.choices[0].delta)||{},x=d.reasoning_content||d.reasoning;let o='';if(x){if(!rs){o='<think>';rs=1}o+=x}if(d.content){if(rs){o+='</think>';rs=0}o+=d.content}return o})}
+const norm=r=>/<file path="/.test(r)?r:r.replace(/(?:^|\n)[#*>\s📄-]*`?([\w./-]+\.(?:html|css|js|json|md|svg|txt))`?\**:?[ \t]*\n+```[\w-]*\n([\s\S]*?)\n```/g,(_,p,x)=>`\n<file path="${p}">${x}</file>\n`);
 async function run(t,md){md=md||S.mode||'both';
  t=t.trim();if(busy||!t)return;const c=cur();
  if(!c.key&&!c.p.nk){toast('Add your API key in Settings first');show('set');return}
@@ -224,7 +234,7 @@ async function run(t,md){md=md||S.mode||'both';
   else if(/^401\b/.test(m))hn='API key missing or wrong for this provider. Check Settings.';
   else if(/^429\b/.test(m))hn='Rate limit reached. Wait a minute or switch model/provider.'}
   er=`<p style="color:var(--er)">⚠ ${esc(ab?'Stopped':m)}</p>`+(hn?`<p class="sm">${esc(hn)}</p>`:'')}
- let ch=0;
+ raw=norm(raw);let ch=0;
  raw.replace(/<file path="([^"]+)">\n?([\s\S]*?)<\/file>/g,(_,p,x)=>{F[np(p)]=cl(x);ch++});
  raw.replace(/<delete path="([^"]+)"\s*\/?>/g,(_,p)=>{delete F[np(p)];ch++});
  if(!raw&&!er)er='<p style="color:var(--er)">⚠ Empty response. Check the model name and key.</p>';
@@ -241,8 +251,8 @@ function build(pg){
  const rp=p=>p.replace(/^(\.?\/)+/,'');
  h=h.replace(/<link\b[^>]*>/g,m=>{const x=m.match(/href=["']([^"':]+)["']/);return x&&/stylesheet/.test(m)&&F[rp(x[1])]!=null?`<style>${F[rp(x[1])]}</style>`:m});
  h=h.replace(/<script\b([^>]*?)src=["']([^"':]+)["']([^>]*)><\/script>/g,(m,a,p,b)=>F[rp(p)]!=null?`<script${a}${b}>${F[rp(p)].replace(/<\/script/gi,'<\\/script')}<\/script>`:m);
- const cap='<script>try{localStorage.x}catch(e){var m={},st={getItem:function(k){return k in m?m[k]:null},setItem:function(k,v){m[k]=String(v)},removeItem:function(k){delete m[k]},clear:function(){m={}},key:function(i){return Object.keys(m)[i]||null}};try{Object.defineProperty(window,"localStorage",{value:st});Object.defineProperty(window,"sessionStorage",{value:st})}catch(e){}}addEventListener("error",function(e){parent.postMessage({fa:1,m:e.message+" (line "+(e.lineno||"?")+")"},"*")});addEventListener("unhandledrejection",function(e){parent.postMessage({fa:1,m:"Promise: "+(e.reason&&e.reason.message||e.reason)},"*")});var ce=console.error;console.error=function(){parent.postMessage({fa:1,m:[].join.call(arguments," ")},"*");ce.apply(console,arguments)};document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a");if(!a)return;var h=a.getAttribute("href")||"";if(/^[\\w\\-\\/.]+\\.html$/.test(h)){e.preventDefault();parent.postMessage({fa:2,p:h},"*")}});<\/script>';
- return /<head[^>]*>/i.test(h)?h.replace(/<head[^>]*>/i,x=>x+cap):cap+h}
+ const cap='<script>try{localStorage.x}catch(e){var m={},st={getItem:function(k){return k in m?m[k]:null},setItem:function(k,v){m[k]=String(v)},removeItem:function(k){delete m[k]},clear:function(){m={}},key:function(i){return Object.keys(m)[i]||null}};try{Object.defineProperty(window,"localStorage",{value:st});Object.defineProperty(window,"sessionStorage",{value:st})}catch(e){}}try{navigator.serviceWorker}catch(e){try{Object.defineProperty(Navigator.prototype,"serviceWorker",{configurable:true,get:function(){return{register:function(){return Promise.resolve({})},ready:Promise.resolve({}),addEventListener:function(){},getRegistrations:function(){return Promise.resolve([])}}}})}catch(x){}}["pushState","replaceState"].forEach(function(k){var o=history[k];history[k]=function(){try{o.apply(history,arguments)}catch(e){}}});addEventListener("error",function(e){parent.postMessage({fa:1,m:e.message+" (line "+(e.lineno||"?")+")"},"*")});addEventListener("unhandledrejection",function(e){parent.postMessage({fa:1,m:"Promise: "+(e.reason&&e.reason.message||e.reason)},"*")});var ce=console.error;console.error=function(){parent.postMessage({fa:1,m:[].join.call(arguments," ")},"*");ce.apply(console,arguments)};document.addEventListener("submit",function(e){e.preventDefault()},true);document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a");if(!a)return;var h=(a.getAttribute("href")||"").trim();if(!h||h.charAt(0)=="#"||/^(mailto:|tel:|javascript:)/i.test(h))return;e.preventDefault();if(/^https?:/i.test(h))window.open(h,"_blank");else parent.postMessage({fa:2,p:h},"*")},true)<\/script>';
+ const vp=/name=["']viewport/i.test(h)?'':'<meta name="viewport" content="width=device-width,initial-scale=1">';return /<head[^>]*>/i.test(h)?h.replace(/<head[^>]*>/i,x=>x+vp+cap):vp+cap+h}
 function pv(){if(!dirty&&$('#fr').srcdoc)return;dirty=0;$('#fr').srcdoc=build(page)}
 function badge(){$('#bd').textContent=errs.length;$('#bd').style.display=errs.length?'block':'none';$('#fix').style.display=errs.length?'':'none'}
 function tabs(){if(!F[cf])cf=F['index.html']!=null?'index.html':Object.keys(F)[0]||'';
@@ -286,6 +296,7 @@ $('#in').onkeydown=e=>{if(e.key=='Enter'&&!e.shiftKey&&innerWidth>=900){e.preven
 log.onclick=e=>{const d=e.target.dataset;if(d.q)run(d.q);if(d.run){e.target.closest('.qs').remove();run('Build the plan above exactly as planned.','build')}};
 $('#tree').onclick=e=>{const el=e.target.closest('.ti');if(!el)return;const d=el.dataset;if(d.f){shut.has(d.f)?shut.delete(d.f):shut.add(d.f)}else if(d.p){cf=d.p;$('.ex').classList.add('ed')}tabs()};
 $('#bk').onclick=()=>$('.ex').classList.remove('ed');
+$('#rs').onclick=()=>{if(!Object.keys(F).length)return toast('Nothing to check yet');show('chat');fixN=0;run('Audit this project for responsiveness at 360px, 768px and 1280px widths. Fix overlapping or fixed-width elements, make navigation collapse properly on small screens, add the viewport meta tag and any missing media queries. Change only what is needed.','build')};
 $('#ed').oninput=e=>{F[cf]=e.target.value;dirty=1;save();edr()};
 $('#nf').onclick=()=>{const n=np(prompt('New file name (e.g. about.html)')||'');if(n){F[n]=F[n]||'';cf=n;$('.ex').classList.add('ed');dirty=1;save();tabs()}};
 $('#df').onclick=()=>{if(cf&&confirm('Delete '+cf+'?')){delete F[cf];$('.ex').classList.remove('ed');dirty=1;save();tabs()}};
@@ -310,8 +321,8 @@ $('#base').oninput=e=>{S.base[S.prov]=e.target.value.trim();save()};
 $('#auto').onchange=e=>{S.auto=e.target.checked?1:0;save()};
 $('#fm').onclick=fetchM;
 addEventListener('message',e=>{if(e.source!==$('#fr').contentWindow)return;const d=e.data||{};
- if(d.fa==1&&errs.length<5&&!errs.includes(d.m)){errs.push(d.m);badge()}
- if(d.fa==2){const p=np(d.p);if(F[p]){page=p;dirty=1;pv()}}});
+ if(d.fa==1&&errs.length<5&&!errs.includes(d.m)&&!/sandbox|allow-same-origin|Script error/i.test(d.m)){errs.push(d.m);badge()}
+ if(d.fa==2){const q=np(String(d.p).split(/[?#]/)[0])||'index.html',p=F[q]!=null?q:F[q+'.html']!=null?q+'.html':'';if(p){page=p;dirty=1;pv()}else toast('Link not in project: '+d.p)}});
 function hi(c,f){const x=f.split('.').pop(),e=c.replace(/&/g,'&amp;').replace(/</g,'&lt;');
  const JS=/(\/\/.*|\/\*[\s\S]*?\*\/)|("(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'|`(?:[^`\\]|\\.)*`)|\b(const|let|var|function|return|if|else|for|while|class|new|import|export|from|async|await|try|catch|switch|case|break|default|this|true|false|null|undefined|typeof|of|in)\b|(\b\d[\d.]*\b)/g;
  const CS=/(\/\*[\s\S]*?\*\/)|("(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*')|(#[0-9a-fA-F]{3,8}\b|\b[a-z-]+(?=\s*:))|(\b\d[\d.]*(?:px|rem|em|%|vh|vw|s|ms|deg)?)/g;
@@ -332,8 +343,9 @@ function delP(id){if(busy||!confirm('Delete this chat and its files?'))return;de
 $('#plist').onclick=e=>{const d=e.target.dataset;if(d.del)return delP(d.del);if(d.ren){const n=prompt('Rename chat',PR[d.ren].n);if(n){PR[d.ren].n=n.slice(0,40);save();plist()}return}const p=e.target.closest('.pi');if(p)openP(p.dataset.id)};
 $('#np').onclick=newP;
 $('#clrall').onclick=()=>{if(busy||!confirm('Delete ALL chats and files?'))return;PR={};cid='';newP()};
-$('#mn').onclick=()=>{$('#side').classList.add('open');$('#sc').classList.add('on')};
+$('#mn').onclick=()=>{if(innerWidth>=900)document.body.classList.toggle('nosb');else{$('#side').classList.add('open');$('#sc').classList.add('on')}};
 $('#sc').onclick=()=>{$('#side').classList.remove('open');$('#sc').classList.remove('on')};
-$('#rz').onpointerdown=e=>{e.preventDefault();const mv=ev=>document.documentElement.style.setProperty('--cw',Math.min(720,Math.max(320,ev.clientX-232))+'px'),up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up)};addEventListener('pointermove',mv);addEventListener('pointerup',up)};
+$('#rz').onpointerdown=e=>{e.preventDefault();const mv=ev=>document.documentElement.style.setProperty('--cw',Math.min(720,Math.max(320,ev.clientX-(document.body.classList.contains('nosb')?0:232)))+'px'),up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up)};addEventListener('pointermove',mv);addEventListener('pointerup',up)};
+if(innerWidth>=900&&innerWidth<1100)document.body.classList.add('nosb');
 tabs();sets();seg();chatInit();plist();show(innerWidth>=900?'pv':'chat');
 </script></body></html>
